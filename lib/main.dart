@@ -5,6 +5,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:leaderboard/constant.dart';
 import 'package:http/http.dart' as http;
+import 'package:leaderboard/offers_page.dart';
+import 'package:leaderboard/public_voting.dart';
+import 'package:leaderboard/slide_puzzle.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,7 +33,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MainScreen(),
+      home: SlidePuzzle(),
     );
   }
 }
