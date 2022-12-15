@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
@@ -9,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:image/image.dart' as image;
 
 import 'package:flutter/material.dart';
+import 'package:leaderboard/main.dart';
 
 class TextStrokeWidget extends StatefulWidget {
   TextStrokeWidget({Key? key}) : super(key: key);
@@ -136,6 +138,15 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
   // default put 2
   int valueSlider = 2;
   GlobalKey<_SlidePuzzleWidgetState> globalKey = GlobalKey();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    Future.delayed(Duration(minutes: 2), () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MainScreen()));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
