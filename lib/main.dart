@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:leaderboard/login.dart';
 import 'package:leaderboard/offers_page.dart';
 import 'package:leaderboard/public_voting.dart';
+import 'package:leaderboard/register.dart';
 import 'package:leaderboard/responsive.dart';
 import 'package:leaderboard/slide_puzzle.dart';
 
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: LoginScreen(),
+      home: RegisterationScreen(),
     );
   }
 }
