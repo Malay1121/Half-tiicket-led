@@ -42,356 +42,356 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+// class MainScreen extends StatefulWidget {
+//   const MainScreen({super.key});
 
-  @override
-  State<MainScreen> createState() => MainScreenState();
-}
+//   @override
+//   State<MainScreen> createState() => MainScreenState();
+// }
 
-dynamic data = {};
-dynamic formattedData = {};
+// dynamic data = {};
+// dynamic formattedData = {};
 
-class MainScreenState extends State<MainScreen> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var response = await http.get(
-        Uri.parse(
-          'https://fluffy-aliens-lick-103-238-108-221.loca.lt/get',
-        ),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      );
-      setState(() {
-        data = jsonDecode(response.body) as Map;
-        formattedData = jsonDecode(response.body) as Map;
-        for (var dat in formattedData['data']) {
-          formattedData['data'][formattedData['data'].indexOf(dat)].addEntries({
-            'first': formattedData['data'][formattedData['data'].indexOf(dat)]
-                ['scores'][0],
-          }.entries);
-          formattedData['data'][formattedData['data'].indexOf(dat)]['scores']
-              .remove(0);
+// class MainScreenState extends State<MainScreen> {
+//   @override
+//   void initState() {
+//     // TODO: implement initState
+//     super.initState();
+//     WidgetsBinding.instance.addPostFrameCallback((_) async {
+//       var response = await http.get(
+//         Uri.parse(
+//           'https://fluffy-aliens-lick-103-238-108-221.loca.lt/get',
+//         ),
+//         headers: <String, String>{
+//           'Content-Type': 'application/json; charset=UTF-8',
+//         },
+//       );
+//       setState(() {
+//         data = jsonDecode(response.body) as Map;
+//         formattedData = jsonDecode(response.body) as Map;
+//         for (var dat in formattedData['data']) {
+//           formattedData['data'][formattedData['data'].indexOf(dat)].addEntries({
+//             'first': formattedData['data'][formattedData['data'].indexOf(dat)]
+//                 ['scores'][0],
+//           }.entries);
+//           formattedData['data'][formattedData['data'].indexOf(dat)]['scores']
+//               .remove(0);
 
-          // for (var da in dat['scores']) {
-          //   // formattedData['data'][dat['scores'].indexOf(da)]
-          //   if (dat['scores'].length - 1 <= 6) {}
-          // }
-        }
-      });
-      print(data);
-    });
-  }
+//           // for (var da in dat['scores']) {
+//           //   // formattedData['data'][dat['scores'].indexOf(da)]
+//           //   if (dat['scores'].length - 1 <= 6) {}
+//           // }
+//         }
+//       });
+//       print(data);
+//     });
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    var _mediaQuery = MediaQuery.of(context).size;
+//   @override
+//   Widget build(BuildContext context) {
+//     var _mediaQuery = MediaQuery.of(context).size;
 
-    return Column(
-      children: [
-        CarouselSlider(
-          items: [
-            for (var grades in formattedData['data'])
-              Row(
-                children: [
-                  SizedBox(
-                    width: responsiveWidth(30, context),
-                  ),
-                  SizedBox(
-                    height: responsiveHeight(820, context),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          grades['grade'].toString(),
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: responsiveText(29, context),
-                            fontWeight: FontWeight.w600,
-                            decoration: TextDecoration.none,
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.blue.shade900,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 4,
-                                spreadRadius: 2,
-                                color: Colors.grey,
-                              ),
-                            ],
-                          ),
-                          width: responsiveWidth(400, context),
-                          height: responsiveHeight(780, context),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: responsiveHeight(40, context),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '1',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: responsiveText(25, context),
-                                      fontWeight: FontWeight.w900,
-                                      decoration: TextDecoration.none,
-                                    ),
-                                  ),
-                                  Text(
-                                    'st ',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: responsiveText(15, context),
-                                      fontWeight: FontWeight.w900,
-                                      decoration: TextDecoration.none,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Rank',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: responsiveText(25, context),
-                                      fontWeight: FontWeight.w900,
-                                      decoration: TextDecoration.none,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: responsiveHeight(40, context),
-                              ),
-                              CircleAvatar(
-                                radius: responsiveText(150, context),
-                                backgroundImage: NetworkImage(
-                                  'https://www.shareicon.net/data/512x512/2016/02/07/715342_people_512x512.png',
-                                ),
-                              ),
-                              SizedBox(
-                                height: responsiveHeight(10, context),
-                              ),
-                              Text(
-                                grades['first']['name'].toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: responsiveText(25, context),
-                                  fontWeight: FontWeight.w700,
-                                  decoration: TextDecoration.none,
-                                ),
-                              ),
-                              Text(
-                                grades['grade'].toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: responsiveText(20, context),
-                                  fontWeight: FontWeight.w600,
-                                  decoration: TextDecoration.none,
-                                ),
-                              ),
-                              SizedBox(
-                                height: responsiveHeight(40, context),
-                              ),
-                              Text(
-                                grades['first']['name'].toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: responsiveText(25, context),
-                                  fontWeight: FontWeight.w700,
-                                  decoration: TextDecoration.none,
-                                ),
-                              ),
-                              Text(
-                                'Points',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: responsiveText(20, context),
-                                  fontWeight: FontWeight.w600,
-                                  decoration: TextDecoration.none,
-                                ),
-                              ),
-                              SizedBox(
-                                height: responsiveHeight(10, context),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: responsiveWidth(40, context),
-                  ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: responsiveHeight(30, context),
-                      ),
-                      for (var classlist in grades['scores'])
-                        Padding(
-                          padding: EdgeInsets.only(
-                            bottom: responsiveHeight(20, context),
-                          ),
-                          child: Container(
-                            height: responsiveHeight(100, context),
-                            width: responsiveWidth(940, context),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.blue.shade200,
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 4,
-                                  spreadRadius: 2,
-                                  color: Colors.grey,
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: responsiveWidth(15, context),
-                                ),
-                                CircleAvatar(
-                                  radius: responsiveText(30, context),
-                                  backgroundImage: NetworkImage(
-                                    'https://www.shareicon.net/data/512x512/2016/02/07/715342_people_512x512.png',
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: responsiveWidth(50, context),
-                                ),
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    SizedBox(
-                                      height: responsiveHeight(10, context),
-                                    ),
-                                    Text(
-                                      classlist['name'].toString(),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsiveText(25, context),
-                                        fontWeight: FontWeight.w700,
-                                        decoration: TextDecoration.none,
-                                      ),
-                                    ),
-                                    Text(
-                                      grades['grade'].toString(),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsiveText(20, context),
-                                        fontWeight: FontWeight.w600,
-                                        decoration: TextDecoration.none,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: responsiveHeight(10, context),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: responsiveWidth(300, context),
-                                ),
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    SizedBox(
-                                      height: responsiveHeight(10, context),
-                                    ),
-                                    Text(
-                                      grades['points'].toString(),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsiveText(25, context),
-                                        fontWeight: FontWeight.w700,
-                                        decoration: TextDecoration.none,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Points',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsiveText(20, context),
-                                        fontWeight: FontWeight.w600,
-                                        decoration: TextDecoration.none,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: responsiveHeight(10, context),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: responsiveWidth(300, context),
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '2',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsiveText(35, context),
-                                        fontWeight: FontWeight.w900,
-                                        decoration: TextDecoration.none,
-                                      ),
-                                    ),
-                                    Text(
-                                      'nd',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: responsiveText(20, context),
-                                        fontWeight: FontWeight.w900,
-                                        decoration: TextDecoration.none,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      Text(
-                        'Made By Uvesh & Malay',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: responsiveText(15, context),
-                          decoration: TextDecoration.none,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: responsiveWidth(30, context),
-                  ),
-                ],
-              ),
-          ],
-          options: CarouselOptions(
-            height: _mediaQuery.height,
-            initialPage: 0,
-            enableInfiniteScroll: true,
-            reverse: false,
-            autoPlay: true,
-            autoPlayInterval: Duration(seconds: 3),
-            autoPlayAnimationDuration: Duration(milliseconds: 800),
-            autoPlayCurve: Curves.fastOutSlowIn,
-            scrollDirection: Axis.horizontal,
-            aspectRatio: 1440 / 900,
-            viewportFraction: 1,
-          ),
-        ),
-      ],
-    );
-  }
-}
+//     return Column(
+//       children: [
+//         CarouselSlider(
+//           items: [
+//             for (var grades in formattedData['data'])
+//               Row(
+//                 children: [
+//                   SizedBox(
+//                     width: responsiveWidth(30, context),
+//                   ),
+//                   SizedBox(
+//                     height: responsiveHeight(820, context),
+//                     child: Column(
+//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                       children: [
+//                         Text(
+//                           grades['grade'].toString(),
+//                           style: TextStyle(
+//                             color: Colors.black,
+//                             fontSize: responsiveText(29, context),
+//                             fontWeight: FontWeight.w600,
+//                             decoration: TextDecoration.none,
+//                           ),
+//                         ),
+//                         Container(
+//                           decoration: BoxDecoration(
+//                             borderRadius: BorderRadius.circular(15),
+//                             color: Colors.blue.shade900,
+//                             boxShadow: [
+//                               BoxShadow(
+//                                 blurRadius: 4,
+//                                 spreadRadius: 2,
+//                                 color: Colors.grey,
+//                               ),
+//                             ],
+//                           ),
+//                           width: responsiveWidth(400, context),
+//                           height: responsiveHeight(780, context),
+//                           child: Column(
+//                             children: [
+//                               SizedBox(
+//                                 height: responsiveHeight(40, context),
+//                               ),
+//                               Row(
+//                                 mainAxisAlignment: MainAxisAlignment.center,
+//                                 crossAxisAlignment: CrossAxisAlignment.start,
+//                                 children: [
+//                                   Text(
+//                                     '1',
+//                                     style: TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: responsiveText(25, context),
+//                                       fontWeight: FontWeight.w900,
+//                                       decoration: TextDecoration.none,
+//                                     ),
+//                                   ),
+//                                   Text(
+//                                     'st ',
+//                                     style: TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: responsiveText(15, context),
+//                                       fontWeight: FontWeight.w900,
+//                                       decoration: TextDecoration.none,
+//                                     ),
+//                                   ),
+//                                   Text(
+//                                     'Rank',
+//                                     style: TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: responsiveText(25, context),
+//                                       fontWeight: FontWeight.w900,
+//                                       decoration: TextDecoration.none,
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                               SizedBox(
+//                                 height: responsiveHeight(40, context),
+//                               ),
+//                               CircleAvatar(
+//                                 radius: responsiveText(150, context),
+//                                 backgroundImage: NetworkImage(
+//                                   'https://www.shareicon.net/data/512x512/2016/02/07/715342_people_512x512.png',
+//                                 ),
+//                               ),
+//                               SizedBox(
+//                                 height: responsiveHeight(10, context),
+//                               ),
+//                               Text(
+//                                 grades['first']['name'].toString(),
+//                                 style: TextStyle(
+//                                   color: Colors.white,
+//                                   fontSize: responsiveText(25, context),
+//                                   fontWeight: FontWeight.w700,
+//                                   decoration: TextDecoration.none,
+//                                 ),
+//                               ),
+//                               Text(
+//                                 grades['grade'].toString(),
+//                                 style: TextStyle(
+//                                   color: Colors.white,
+//                                   fontSize: responsiveText(20, context),
+//                                   fontWeight: FontWeight.w600,
+//                                   decoration: TextDecoration.none,
+//                                 ),
+//                               ),
+//                               SizedBox(
+//                                 height: responsiveHeight(40, context),
+//                               ),
+//                               Text(
+//                                 grades['first']['name'].toString(),
+//                                 style: TextStyle(
+//                                   color: Colors.white,
+//                                   fontSize: responsiveText(25, context),
+//                                   fontWeight: FontWeight.w700,
+//                                   decoration: TextDecoration.none,
+//                                 ),
+//                               ),
+//                               Text(
+//                                 'Points',
+//                                 style: TextStyle(
+//                                   color: Colors.white,
+//                                   fontSize: responsiveText(20, context),
+//                                   fontWeight: FontWeight.w600,
+//                                   decoration: TextDecoration.none,
+//                                 ),
+//                               ),
+//                               SizedBox(
+//                                 height: responsiveHeight(10, context),
+//                               ),
+//                             ],
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                   SizedBox(
+//                     width: responsiveWidth(40, context),
+//                   ),
+//                   Column(
+//                     children: [
+//                       SizedBox(
+//                         height: responsiveHeight(30, context),
+//                       ),
+//                       for (var classlist in grades['scores'])
+//                         Padding(
+//                           padding: EdgeInsets.only(
+//                             bottom: responsiveHeight(20, context),
+//                           ),
+//                           child: Container(
+//                             height: responsiveHeight(100, context),
+//                             width: responsiveWidth(940, context),
+//                             decoration: BoxDecoration(
+//                               borderRadius: BorderRadius.circular(15),
+//                               color: Colors.blue.shade200,
+//                               boxShadow: [
+//                                 BoxShadow(
+//                                   blurRadius: 4,
+//                                   spreadRadius: 2,
+//                                   color: Colors.grey,
+//                                 ),
+//                               ],
+//                             ),
+//                             child: Row(
+//                               children: [
+//                                 SizedBox(
+//                                   width: responsiveWidth(15, context),
+//                                 ),
+//                                 CircleAvatar(
+//                                   radius: responsiveText(30, context),
+//                                   backgroundImage: NetworkImage(
+//                                     'https://www.shareicon.net/data/512x512/2016/02/07/715342_people_512x512.png',
+//                                   ),
+//                                 ),
+//                                 SizedBox(
+//                                   width: responsiveWidth(50, context),
+//                                 ),
+//                                 Column(
+//                                   mainAxisAlignment:
+//                                       MainAxisAlignment.spaceEvenly,
+//                                   children: [
+//                                     SizedBox(
+//                                       height: responsiveHeight(10, context),
+//                                     ),
+//                                     Text(
+//                                       classlist['name'].toString(),
+//                                       style: TextStyle(
+//                                         color: Colors.white,
+//                                         fontSize: responsiveText(25, context),
+//                                         fontWeight: FontWeight.w700,
+//                                         decoration: TextDecoration.none,
+//                                       ),
+//                                     ),
+//                                     Text(
+//                                       grades['grade'].toString(),
+//                                       style: TextStyle(
+//                                         color: Colors.white,
+//                                         fontSize: responsiveText(20, context),
+//                                         fontWeight: FontWeight.w600,
+//                                         decoration: TextDecoration.none,
+//                                       ),
+//                                     ),
+//                                     SizedBox(
+//                                       height: responsiveHeight(10, context),
+//                                     ),
+//                                   ],
+//                                 ),
+//                                 SizedBox(
+//                                   width: responsiveWidth(300, context),
+//                                 ),
+//                                 Column(
+//                                   mainAxisAlignment:
+//                                       MainAxisAlignment.spaceEvenly,
+//                                   children: [
+//                                     SizedBox(
+//                                       height: responsiveHeight(10, context),
+//                                     ),
+//                                     Text(
+//                                       grades['points'].toString(),
+//                                       style: TextStyle(
+//                                         color: Colors.white,
+//                                         fontSize: responsiveText(25, context),
+//                                         fontWeight: FontWeight.w700,
+//                                         decoration: TextDecoration.none,
+//                                       ),
+//                                     ),
+//                                     Text(
+//                                       'Points',
+//                                       style: TextStyle(
+//                                         color: Colors.white,
+//                                         fontSize: responsiveText(20, context),
+//                                         fontWeight: FontWeight.w600,
+//                                         decoration: TextDecoration.none,
+//                                       ),
+//                                     ),
+//                                     SizedBox(
+//                                       height: responsiveHeight(10, context),
+//                                     ),
+//                                   ],
+//                                 ),
+//                                 SizedBox(
+//                                   width: responsiveWidth(300, context),
+//                                 ),
+//                                 Row(
+//                                   crossAxisAlignment: CrossAxisAlignment.start,
+//                                   children: [
+//                                     Text(
+//                                       '2',
+//                                       style: TextStyle(
+//                                         color: Colors.white,
+//                                         fontSize: responsiveText(35, context),
+//                                         fontWeight: FontWeight.w900,
+//                                         decoration: TextDecoration.none,
+//                                       ),
+//                                     ),
+//                                     Text(
+//                                       'nd',
+//                                       style: TextStyle(
+//                                         color: Colors.white,
+//                                         fontSize: responsiveText(20, context),
+//                                         fontWeight: FontWeight.w900,
+//                                         decoration: TextDecoration.none,
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ],
+//                             ),
+//                           ),
+//                         ),
+//                       Text(
+//                         'Made By Uvesh & Malay',
+//                         style: TextStyle(
+//                           color: Colors.black,
+//                           fontSize: responsiveText(15, context),
+//                           decoration: TextDecoration.none,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                   SizedBox(
+//                     width: responsiveWidth(30, context),
+//                   ),
+//                 ],
+//               ),
+//           ],
+//           options: CarouselOptions(
+//             height: _mediaQuery.height,
+//             initialPage: 0,
+//             enableInfiniteScroll: true,
+//             reverse: false,
+//             autoPlay: true,
+//             autoPlayInterval: Duration(seconds: 3),
+//             autoPlayAnimationDuration: Duration(milliseconds: 800),
+//             autoPlayCurve: Curves.fastOutSlowIn,
+//             scrollDirection: Axis.horizontal,
+//             aspectRatio: 1440 / 900,
+//             viewportFraction: 1,
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }

@@ -3,14 +3,17 @@ import 'dart:math';
 import 'dart:ui';
 
 // import 'package:FlutterTutorial/pages/tuto/textStroke.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:image/image.dart' as image;
 
 import 'package:flutter/material.dart';
 import 'package:leaderboard/main.dart';
+import 'package:leaderboard/responsive.dart';
 
 class TextStrokeWidget extends StatefulWidget {
   TextStrokeWidget({Key? key}) : super(key: key);
@@ -18,6 +21,8 @@ class TextStrokeWidget extends StatefulWidget {
   @override
   _TextStrokeWidgetState createState() => _TextStrokeWidgetState();
 }
+
+bool imageLoaded = false;
 
 class _TextStrokeWidgetState extends State<TextStrokeWidget> {
   // lets make a simple statefull widget
@@ -126,6 +131,8 @@ class TextWidget extends StatelessWidget {
   }
 }
 
+final _stopwatch = Stopwatch();
+
 // make statefull widget for testing
 class SlidePuzzle extends StatefulWidget {
   SlidePuzzle({Key? key}) : super(key: key);
@@ -136,16 +143,19 @@ class SlidePuzzle extends StatefulWidget {
 
 class _SlidePuzzleState extends State<SlidePuzzle> {
   // default put 2
-  int valueSlider = 2;
+  int valueSlider = 4;
   GlobalKey<_SlidePuzzleWidgetState> globalKey = GlobalKey();
 
   @override
   void initState() {
     // TODO: implement initState
-    Future.delayed(Duration(minutes: 2), () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MainScreen()));
+    Timer.periodic(Duration(seconds: 1), (s) {
+      setState(() {});
     });
+    // Future.delayed(Duration(minutes: 2), () {
+    //   Navigator.push(
+    //       context, MaterialPageRoute(builder: (context) => MainScreen()));
+    // });
   }
 
   @override
@@ -153,82 +163,65 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
     double border = 5;
 
     return Scaffold(
+      backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: Color(0xFFFFB802),
         title: TextWidget(
           "Slide Puzzle ${valueSlider}x$valueSlider",
-          color: Color(0xff225f87),
-          strokeColor: Colors.white,
-          strokeWidth: 8,
+          color: Colors.white,
           fontSize: 30,
           overrideSizeStroke: false,
         ),
-        actions: [
-          // make reload button for testing/ or dont need one.. up to u
-          // set generate on top for easy test
-          InkWell(
-            child: Icon(Icons.refresh),
-            onTap: () => globalKey.currentState?.generatePuzzle(),
-          )
-        ],
+        leading: GestureDetector(
+          child: Icon(Icons.arrow_back_ios),
+          onTap: (() {
+            setState(() {
+              imageLoaded = false;
+            });
+            Navigator.pop(context);
+          }),
+        ),
       ),
       body: Container(
         height: double.maxFinite,
         width: double.maxFinite,
-        color: Colors.green[100],
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            colors: [Color(0xFFFFD18B), Color(0xFFFBE43C)],
+          ),
+        ),
         child: SafeArea(
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  border:
-                      Border.all(width: border, color: Colors.green.shade600),
-                ),
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return Container(
-                      width: constraints.biggest.width,
-                      // comment of this so our box can extends height
-                      // height: constraints.biggest.width,
+          child: Container(
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Container(
+                  width: constraints.biggest.width,
+                  // comment of this so our box can extends height
+                  // height: constraints.biggest.width,
 
-                      // if setup decoration,color must put inside
-                      // make puzzle widget
-                      child: SlidePuzzleWidget(
-                        key: globalKey,
-                        size: constraints.biggest,
-                        // set size puzzle
-                        sizePuzzle: valueSlider,
-                        imageBckGround: Image(
-                          // u can use your own image
-                          image: NetworkImage(
-                              "https://play-lh.googleusercontent.com/IeNJWoKYx1waOhfWF6TiuSiWBLfqLb18lmZYXSgsH1fvb8v1IYiZr5aYWe0Gxu-pVZX3"),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                // child: ,
-              ),
-              Container(
-                child: Slider(
-                  min: 2,
-                  max: 15,
-                  divisions: 13,
-                  label: "${valueSlider.toString()}",
-                  value: valueSlider.toDouble(),
-                  onChanged: (value) {
-                    setState(
-                      () {
-                        valueSlider = value.toInt();
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
+                  // if setup decoration,color must put inside
+                  // make puzzle widget
+                  child: SlidePuzzleWidget(
+                    key: globalKey,
+                    size: constraints.biggest,
+                    // set size puzzle
+                    sizePuzzle: 4,
+                    imageBckGround: Image(
+                      // u can use your own image
+                      image: NetworkImage(
+                          "https://play-lh.googleusercontent.com/IeNJWoKYx1waOhfWF6TiuSiWBLfqLb18lmZYXSgsH1fvb8v1IYiZr5aYWe0Gxu-pVZX3"),
+                    ),
+                  ),
+                );
+              },
+            ),
+            // child: ,
           ),
         ),
       ),
@@ -285,9 +278,21 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
       mainAxisSize: MainAxisSize.min,
       // let make ui
       children: [
+        SizedBox(
+          height: responsiveHeight(57, context),
+          width: responsiveWidth(325, context),
+          child: AutoSizeText(
+            _stopwatch.elapsed.toString(),
+            style: GoogleFonts.outfit(
+              textStyle: TextStyle(
+                fontSize: responsiveText(40, context),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
         // make 2 column, 1 for puzzle box, 2nd for button testing
         Container(
-          decoration: BoxDecoration(color: Colors.white),
           width: widget.size.width,
           height: widget.size.width,
           padding: EdgeInsets.all(widget.innerPadding),
@@ -300,8 +305,7 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
                 RepaintBoundary(
                   key: _globalKey,
                   child: Container(
-                    padding: EdgeInsets.all(10),
-                    color: Colors.red,
+                    color: Colors.transparent,
                     height: double.maxFinite,
                     child: widget.imageBckGround,
                   ),
@@ -355,7 +359,13 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
                           child: Container(
                             alignment: Alignment.center,
                             margin: EdgeInsets.all(2),
-                            color: Colors.blue,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2,
+                              ),
+                            ),
                             child: Stack(
                               children: [
                                 if (slideObject.image != null) ...[
@@ -388,6 +398,7 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
             ],
           ),
         ),
+        Spacer(),
         Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -395,26 +406,50 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
               // u can use any button
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () => generatePuzzle(),
-                  child: Text("Generate"),
+                child: GestureDetector(
+                  onTap: () {
+                    generatePuzzle();
+                    _stopwatch.start();
+                  },
+                  child: Container(
+                    height: responsiveHeight(58, context),
+                    width: responsiveWidth(326, context),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(37),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFFFFB2B2),
+                          Color(0xFFFBC63C),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: Center(
+                      child: SizedBox(
+                        height: responsiveHeight(25, context),
+                        width: responsiveWidth(106, context),
+                        child: Center(
+                          child: AutoSizeText(
+                            imageLoaded == true ? 'Re-Start' : 'Start',
+                            style: GoogleFonts.outfit(
+                              textStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: responsiveText(20, context),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  // for checking purpose
-                  onPressed: startSlide ? null : () => reversePuzzle(),
-                  child: Text("Reverse"),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () => clearPuzzle(),
-                  child: Text("Clear"),
-                ),
-              )
             ],
           ),
         ),
@@ -449,6 +484,9 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
 
     print(this.fullImage!.width);
     // ok nice..full image loaded
+    setState(() {
+      imageLoaded = true;
+    });
 
     // calculate box size for each puzzle
     Size sizeBox =
@@ -610,6 +648,7 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
             slideObjects!.length &&
         finishSwap) {
       print("Success");
+      setState(() {});
       success = true;
     } else {
       success = false;
