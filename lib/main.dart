@@ -11,6 +11,7 @@ import 'package:leaderboard/public_voting.dart';
 import 'package:leaderboard/register.dart';
 import 'package:leaderboard/responsive.dart';
 import 'package:leaderboard/slide_puzzle.dart';
+import 'package:leaderboard/typing_speed.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: RegisterationScreen(),
+      home: SlidePuzzle(),
     );
   }
 }
