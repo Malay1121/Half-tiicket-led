@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
 
@@ -10,10 +11,12 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:image/image.dart' as image;
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:leaderboard/main.dart';
 import 'package:leaderboard/responsive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TextStrokeWidget extends StatefulWidget {
   TextStrokeWidget({Key? key}) : super(key: key);
@@ -577,7 +580,7 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
     return slideObjects!.firstWhere((element) => element.empty);
   }
 
-  changePos(int indexCurrent) {
+  changePos(int indexCurrent) async {
     // problem here i think..
     SlideObject slideObjectEmpty = getEmptyObject();
 
@@ -641,12 +644,24 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
     }
 
     // this to check if all puzzle box already in default place.. can set callback for success later
+    SharedPreferences _preferences = await SharedPreferences.getInstance();
     if (slideObjects!
                 .where((slideObject) =>
                     slideObject.indexCurrent == slideObject.indexDefault - 1)
                 .length ==
             slideObjects!.length &&
         finishSwap) {
+      _stopwatch.stop();
+      final response = await http.post(
+        Uri.parse('http://26.243.151.253:8000/addUser'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'name': _preferences.getString('name'),
+          'time': _stopwatch.elapsed,
+        }),
+      );
       print("Success");
       setState(() {});
       success = true;

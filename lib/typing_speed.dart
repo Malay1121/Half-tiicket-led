@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 final _stopwatch = Stopwatch();
 String timeTaken = '0:0:0';
+dynamic _data = ['Loading'];
 
 class TypingSpeed extends StatefulWidget {
   const TypingSpeed({super.key});
@@ -19,6 +22,20 @@ class _TypingSpeedState extends State<TypingSpeed> {
     Timer.periodic(Duration(seconds: 1), (s) {
       setState(() {});
     });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var response = await http.get(
+        Uri.parse(
+          'https://random-word-api.herokuapp.com/word?length=15',
+        ),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      setState(() {
+        _data = json.decode(response.body).cast<String>().toList();
+      });
+      print(_data);
+    });
   }
 
   @override
@@ -26,7 +43,7 @@ class _TypingSpeedState extends State<TypingSpeed> {
     return Scaffold(
       body: Column(
         children: [
-          Text('quizzifications'),
+          Text(_data[0].toString()),
           Text(_stopwatch.elapsed.toString()),
           SizedBox(
             width: 300,
@@ -36,7 +53,7 @@ class _TypingSpeedState extends State<TypingSpeed> {
                 _stopwatch.start();
               },
               onChanged: ((value) {
-                if (value == 'quizzifications') {
+                if (value == _data[0].toString()) {
                   _stopwatch.stop();
                   setState(() {
                     timeTaken = _stopwatch.elapsed.toString();
@@ -44,7 +61,7 @@ class _TypingSpeedState extends State<TypingSpeed> {
                 }
               }),
               onSubmitted: (s) {
-                if (s == 'quizzifications') {
+                if (s == _data[0].toString()) {
                   _stopwatch.stop();
                   setState(() {
                     timeTaken = _stopwatch.elapsed.toString();
