@@ -83,7 +83,7 @@ class _TypingSpeedState extends State<TypingSpeed> {
                   setState(() {
                     timeTaken = _stopwatch.elapsed.toString();
                   });
-
+                  print(_preferences.getString('_id'));
                   final response = await http.post(
                     Uri.parse(
                         'api.halftiicket.com/addPlayerContest/${widget.id}?time=1'),

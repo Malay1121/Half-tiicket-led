@@ -24,6 +24,66 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async {
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+
+        if (preferences.getString('email') != null &&
+            preferences.getString('password') != null &&
+            preferences.getString('password') != 'null' &&
+            preferences.getString('email') != 'null') {
+          dynamic response =
+              await http.post(Uri.parse('https://api.halftiicket.com/login'),
+                  headers: <String, String>{
+                    'Content-Type': 'application/json; charset=UTF-8',
+                  },
+                  body: jsonEncode({
+                    'email': preferences.getString('email'),
+                    'password': preferences.getString('password')
+                  }));
+          var body = jsonDecode(response.body);
+          SharedPreferences preference = await SharedPreferences.getInstance();
+
+          if (body['detail'] != "email or password incorrect") {
+            preference!.setString('_id', body['_id']);
+            preference!.setString('name', body['name']);
+            preference!.setString('password', body['password']);
+            preference!.setInt('childAge', body['childAge']);
+            preference!.setString('email', body['email']);
+            preference!.setInt('phoneNumber', body['phoneNumber']);
+            preference!.setBool('admin', body['admin']);
+            preference!.setString('contests', body['contests'].toString());
+
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
+          } else {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return Center(
+                  child: Text(
+                    'Wrong Email or Password!',
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                        color: Color(0xFF77B255),
+                        fontSize: responsiveText(20, context),
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+        }
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SizedBox(

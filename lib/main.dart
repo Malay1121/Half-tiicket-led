@@ -14,6 +14,7 @@ import 'package:leaderboard/register.dart';
 import 'package:leaderboard/responsive.dart';
 import 'package:leaderboard/slide_puzzle.dart';
 import 'package:leaderboard/typing_speed.dart';
+import 'package:leaderboard/voting_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,9 +40,11 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
         '/': (context) => HomePage(),
+        '/votes': (context) => VotingScreen(),
+        '/voting': (context) => PublicVoting(),
         '/login': (context) => LoginScreen(),
         '/register': (context) => RegisterationScreen(),
         '/offers': (context) => OffersPage(),
