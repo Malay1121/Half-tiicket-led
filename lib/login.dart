@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:leaderboard/constant.dart';
+import 'package:leaderboard/home_page.dart';
 import 'package:leaderboard/public_voting.dart';
 import 'package:leaderboard/register.dart';
 import 'package:leaderboard/responsive.dart';
@@ -221,29 +222,31 @@ class _LoginScreenState extends State<LoginScreen> {
                         SharedPreferences _preferences =
                             await SharedPreferences.getInstance();
                         final response = await http.post(
-                          Uri.parse('http://26.243.151.253:8000/login'),
+                          Uri.parse('https://api.halftiicket.com/login'),
                           headers: {
                             'Content-Type': 'application/json',
                           },
                           body: jsonEncode({
-                            'phone': _emailController.text,
+                            'email': _emailController.text,
                             'password': _passwordController.text,
                           }),
                         );
                         var data = jsonDecode(response.body);
                         if (data != {"detail": "email or password incorrect"}) {
                           _preferences.setString('email', data['email']);
-                          _preferences.setString(
+                          _preferences.setInt(
                               'phoneNumber', data['phoneNumber']);
                           _preferences.setString('password', data['password']);
-                          _preferences.setString('childAge', data['childAge']);
+                          _preferences.setInt('childAge', data['childAge']);
                           _preferences.setString('name', data['name']);
-                          _preferences.setString('admin', data['admin']);
+                          _preferences.setBool('admin', data['admin']);
+                          _preferences.setString(
+                              'contests', data['contests'].toString());
 
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => PublicVoting()));
+                                  builder: (context) => HomePage()));
                         } else {
                           showDialog(
                               context: context,

@@ -5,6 +5,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:leaderboard/constant.dart';
 import 'package:http/http.dart' as http;
+import 'package:leaderboard/contests.dart';
+import 'package:leaderboard/home_page.dart';
 import 'package:leaderboard/login.dart';
 import 'package:leaderboard/offers_page.dart';
 import 'package:leaderboard/public_voting.dart';
@@ -37,7 +39,20 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: TypingSpeed(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomePage(),
+        '/login': (context) => LoginScreen(),
+        '/register': (context) => RegisterationScreen(),
+        '/offers': (context) => OffersPage(),
+        '/contests': (context) => ContestsScreen(),
+        '/639cda5575f95e42b54ff971': (context) => SlidePuzzle(
+              id: '639cdb1675f95e42b54ff971',
+            ),
+        '/639cdb1675f95e42b54ff972': (context) => TypingSpeed(
+              id: '639cdb1675f95e42b54ff972',
+            ),
+      },
     );
   }
 }

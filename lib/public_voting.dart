@@ -31,7 +31,7 @@ class _PublicVotingState extends State<PublicVoting> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var response = await http.get(
         Uri.parse(
-          'http://26.243.151.253:8000/getBands',
+          'https://api.halftiicket.com/getBands',
         ),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -132,7 +132,7 @@ class _PublicVotingState extends State<PublicVoting> {
                   onTap: () async {
                     final response = await http.post(
                       Uri.parse(
-                          'http://26.243.151.253:8000/addVotes/$_selectedBand'),
+                          'https://api.halftiicket.com/addVotes/$_selectedBand'),
                       headers: {
                         'Content-Type': 'application/json',
                       },
@@ -140,7 +140,7 @@ class _PublicVotingState extends State<PublicVoting> {
                     );
                     final voteResponse = await http.get(
                       Uri.parse(
-                        'http://26.243.151.253:8000/getVotes',
+                        'https://api.halftiicket.com/getVotes',
                       ),
                       headers: <String, String>{
                         'Content-Type': 'application/json; charset=UTF-8',

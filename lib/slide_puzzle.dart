@@ -138,8 +138,11 @@ final _stopwatch = Stopwatch();
 
 // make statefull widget for testing
 class SlidePuzzle extends StatefulWidget {
-  SlidePuzzle({Key? key}) : super(key: key);
-
+  SlidePuzzle({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
+  final String id;
   @override
   _SlidePuzzleState createState() => _SlidePuzzleState();
 }
@@ -152,9 +155,7 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
   @override
   void initState() {
     // TODO: implement initState
-    Timer.periodic(Duration(seconds: 1), (s) {
-      setState(() {});
-    });
+
     // Future.delayed(Duration(minutes: 2), () {
     //   Navigator.push(
     //       context, MaterialPageRoute(builder: (context) => MainScreen()));
@@ -211,6 +212,7 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
                   // if setup decoration,color must put inside
                   // make puzzle widget
                   child: SlidePuzzleWidget(
+                    id: widget.id,
                     key: globalKey,
                     size: constraints.biggest,
                     // set size puzzle
@@ -249,8 +251,9 @@ class SlidePuzzleWidget extends StatefulWidget {
           'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png'),
     ),
     this.sizePuzzle = 1,
+    required this.id,
   }) : super(key: key);
-
+  final String id;
   @override
   _SlidePuzzleWidgetState createState() => _SlidePuzzleWidgetState();
 }
@@ -355,7 +358,8 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
                       left: slideObject.posCurrent.dx,
                       top: slideObject.posCurrent.dy,
                       child: GestureDetector(
-                        onTap: () => changePos(slideObject.indexCurrent),
+                        onTap: () =>
+                            changePos(slideObject.indexCurrent, widget.id),
                         child: SizedBox(
                           width: slideObject.size.width,
                           height: slideObject.size.height,
@@ -411,7 +415,7 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   onTap: () {
-                    generatePuzzle();
+                    generatePuzzle(widget.id);
                     _stopwatch.start();
                   },
                   child: Container(
@@ -478,7 +482,7 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
   }
 
   // method to generate our puzzle
-  generatePuzzle() async {
+  generatePuzzle(String id) async {
     // dclare our array puzzle
     finishSwap = false;
     setState(() {});
@@ -562,7 +566,7 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
 
         // call change pos method we create before to swap place
 
-        changePos(randKey);
+        changePos(randKey, id);
         // ops forgot to swap
         // hmm bug.. :).. let move 1st with click..check whther bug on swap or change pos
         swap = !swap;
@@ -580,7 +584,7 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
     return slideObjects!.firstWhere((element) => element.empty);
   }
 
-  changePos(int indexCurrent) async {
+  changePos(int indexCurrent, String id) async {
     // problem here i think..
     SlideObject slideObjectEmpty = getEmptyObject();
 
@@ -653,12 +657,13 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
         finishSwap) {
       _stopwatch.stop();
       final response = await http.post(
-        Uri.parse('http://26.243.151.253:8000/addUser'),
+        Uri.parse('api.halftiicket.com/addPlayerContest/${id}'),
         headers: {
           'Content-Type': 'application/json',
+          'x-api-key': _preferences.getString('_id').toString(),
         },
         body: jsonEncode({
-          'name': _preferences.getString('name'),
+          'contest_id': id.toString(),
           'time': _stopwatch.elapsed,
         }),
       );
@@ -690,7 +695,7 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
     await Stream.fromIterable(process!.reversed)
         .asyncMap((event) async =>
             await Future.delayed(Duration(milliseconds: 50))
-                .then((value) => changePos(event)))
+                .then((value) => changePos(event, widget.id)))
         .toList();
 
     // yeayy

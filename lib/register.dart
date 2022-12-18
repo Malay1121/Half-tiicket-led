@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:leaderboard/home_page.dart';
 import 'package:leaderboard/login.dart';
 import 'package:leaderboard/public_voting.dart';
 import 'package:leaderboard/responsive.dart';
@@ -415,51 +416,61 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                       onTap: () async {
                         SharedPreferences _preferences =
                             await SharedPreferences.getInstance();
-                        final response = await http.post(
-                          Uri.parse('http://26.243.151.253:8000/addUser'),
+                        await http
+                            .post(
+                          Uri.parse('https://api.halftiicket.com/addUser'),
                           headers: {
                             'Content-Type': 'application/json',
                           },
                           body: jsonEncode({
                             'name': _nameController.text,
                             'email': _emailController.text,
-                            'age': _age,
-                            'phone': int.parse(_phoneController.text),
+                            'childAge': _age,
+                            'phoneNumber': int.parse(_phoneController.text),
                             'password': _passwordController.text,
+                            "contests": {}
                           }),
-                        );
-                        var data = jsonDecode(response.body);
-                        if (data != {"message": "minimum child age is 3"} ||
-                            data !=
-                                {
-                                  "detail": [
-                                    {
-                                      "loc": ["body", "email"],
-                                      "msg":
-                                          "value is not a valid email address",
-                                      "type": "value_error.email"
-                                    }
-                                  ]
-                                }) {
-                          _preferences.setString('email', data['email']);
-                          _preferences.setString(
-                              'phoneNumber', data['phoneNumber']);
-                          _preferences.setString('password', data['password']);
-                          _preferences.setString('childAge', data['childAge']);
-                          _preferences.setString('name', data['name']);
-                          _preferences.setString('admin', data['admin']);
+                        )
+                            .then((value) {
+                          var data = jsonDecode(value.body);
+                          print(data);
+                          if (data != {"message": "minimum child age is 3"} ||
+                              data !=
+                                  {
+                                    "detail": [
+                                      {
+                                        "loc": ["body", "email"],
+                                        "msg":
+                                            "value is not a valid email address",
+                                        "type": "value_error.email"
+                                      }
+                                    ]
+                                  } ||
+                              data !=
+                                  "{detail: [{loc: [body], msg: value is not a valid dict, type: type_error.dict}]}") {
+                            _preferences.setString('email', data['email']);
+                            _preferences.setInt(
+                                'phoneNumber', data['phoneNumber']);
+                            _preferences.setString(
+                                'password', data['password']);
+                            _preferences.setInt('childAge', data['childAge']);
+                            _preferences.setString('name', data['name']);
+                            _preferences.setBool('admin', data['admin']);
+                            _preferences.setString(
+                                'contests', data['contests'].toString());
 
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PublicVoting()));
-                        } else {
-                          showDialog(
-                              context: context,
-                              builder: ((context) {
-                                return Text('Try again');
-                              }));
-                        }
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()));
+                          } else {
+                            showDialog(
+                                context: context,
+                                builder: ((context) {
+                                  return Text('Try again');
+                                }));
+                          }
+                        });
                       },
                       child: Container(
                         height: responsiveHeight(58, context),
