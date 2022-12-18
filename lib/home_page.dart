@@ -41,6 +41,11 @@ class _HomePageState extends State<HomePage> {
                   Navigator.pushNamed(context, '/voting');
                 },
                 child: Text('Vote Band')),
+            GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/mathquiz');
+                },
+                child: Text('Math Quiz')),
           ],
         ),
       ),

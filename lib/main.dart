@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:leaderboard/contests.dart';
 import 'package:leaderboard/home_page.dart';
 import 'package:leaderboard/login.dart';
+import 'package:leaderboard/math_quiz.dart';
 import 'package:leaderboard/offers_page.dart';
 import 'package:leaderboard/public_voting.dart';
 import 'package:leaderboard/register.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
         '/votes': (context) => VotingScreen(),
         '/voting': (context) => PublicVoting(),
         '/login': (context) => LoginScreen(),
+        '/mathquiz':(context) => MathQuiz(),
         '/register': (context) => RegisterationScreen(),
         '/offers': (context) => OffersPage(),
         '/contests': (context) => ContestsScreen(),
