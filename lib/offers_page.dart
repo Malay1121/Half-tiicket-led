@@ -1,6 +1,11 @@
 import 'dart:convert';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:leaderboard/responsive.dart';
+import 'package:leaderboard/typing_speed.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class OffersPage extends StatefulWidget {
@@ -11,30 +16,50 @@ class OffersPage extends StatefulWidget {
 }
 
 dynamic _data = {
-  "bands": [
+  "list": [
     {
-      "_id": "6397006722c744a2b5b6b5d0",
-      "name": "demo1",
-      "logo":
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"
+      "_id": "6395c868ed9d5a6f772a21ba",
+      "name": "demo name",
+      "img":
+          "https://www.ssbcrack.com/wp-content/uploads/2022/11/IMA-POP-10-Dec-2022.png",
+      "code": "demo code",
+      "description": "demo description",
+      "link": "demo.link",
+      "expiry_date": "2022-12-11T12:15:38.211000",
+      "title": "demo tittle"
     },
     {
-      "_id": "639700cf22c744a2b5b6b5d1",
-      "name": "demo2",
-      "logo":
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"
+      "_id": "6395ca01ed9d5a6f772a21bb",
+      "name": "demo 1",
+      "img":
+          "https://www.ssbcrack.com/wp-content/uploads/2022/11/IMA-POP-10-Dec-2022.png",
+      "code": "demo code",
+      "description": "demo description",
+      "link": "demo.link",
+      "expiry_date": "2022-12-11T12:15:38.211000",
+      "title": "demo tittle"
     },
     {
-      "_id": "639700d422c744a2b5b6b5d2",
-      "name": "demo3",
-      "logo":
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"
+      "_id": "6395ca05ed9d5a6f772a21bc",
+      "name": "demo 2",
+      "img":
+          "https://www.ssbcrack.com/wp-content/uploads/2022/11/IMA-POP-10-Dec-2022.png",
+      "code": "demo code",
+      "description": "demo description",
+      "link": "demo.link",
+      "expiry_date": "2022-12-11T12:15:38.211000",
+      "title": "demo tittle"
     },
     {
-      "_id": "639700d922c744a2b5b6b5d3",
-      "name": "demo4",
-      "logo":
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"
+      "_id": "6395ca0ced9d5a6f772a21bd",
+      "name": "demo 3",
+      "img":
+          "https://www.ssbcrack.com/wp-content/uploads/2022/11/IMA-POP-10-Dec-2022.png",
+      "code": "demo code",
+      "description": "demo description",
+      "link": "demo.link",
+      "expiry_date": "2022-12-11T12:15:38.211000",
+      "title": "demo tittle"
     }
   ]
 };
@@ -83,84 +108,136 @@ class OffersPageState extends State<OffersPage> {
                   border: OutlineInputBorder()),
             ),
             Expanded(
-              child: GridView(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, crossAxisSpacing: 10),
+              child: ListView(
+                padding: EdgeInsets.only(top: responsiveHeight(60, context)),
                 children: [
-                  for (var offer in _data['list'])
-                    OfferCard(
-                      name: offer['name'],
-                      description: offer['description'],
-                      img: offer['img'],
-                      link: offer['link'],
-                      title: offer['title'],
-                      index: _data['list'].indexOf(offer),
-                    ),
+                  Column(
+                    children: [
+                      for (var offer in _data['list'])
+                        Container(
+                          width: responsiveWidth(341, context),
+                          height: responsiveHeight(358, context),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.center,
+                              colors: [
+                                Color(0xFFFFF8C6),
+                                Color(0xFFF7DA00),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(90),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(offer['img']),
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Spacer(),
+                              Container(
+                                width: responsiveWidth(341, context),
+                                height: responsiveHeight(214, context),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(90),
+                                ),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: responsiveHeight(12, context),
+                                    ),
+                                    SizedBox(
+                                      width: responsiveWidth(200, context),
+                                      height: responsiveHeight(60, context),
+                                      child: Center(
+                                        child: AutoSizeText(
+                                          offer['name'],
+                                          style: GoogleFonts.outfit(
+                                            textStyle: TextStyle(
+                                              color: Color(0xFF903838),
+                                              fontSize:
+                                                  responsiveText(24, context),
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: responsiveHeight(8, context),
+                                    ),
+                                    SizedBox(
+                                      width: responsiveWidth(220, context),
+                                      height: responsiveHeight(21, context),
+                                      child: Center(
+                                        child: AutoSizeText(
+                                          offer['description'],
+                                          style: GoogleFonts.outfit(
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontSize:
+                                                  responsiveText(17, context),
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: responsiveHeight(23, context),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        showCupertinoModalBottomSheet(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return Container();
+                                            });
+                                      },
+                                      child: Container(
+                                        height: responsiveHeight(54, context),
+                                        width: responsiveWidth(157, context),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(90),
+                                          gradient: LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              Color(0xFFF89A0B),
+                                              Color(0xFFE97522),
+                                            ],
+                                          ),
+                                        ),
+                                        child: SizedBox(
+                                          child: Center(
+                                            child: AutoSizeText(
+                                              'View Details',
+                                              style: GoogleFonts.outfit(
+                                                textStyle: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: responsiveText(
+                                                      20, context),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                    ],
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class OfferCard extends StatelessWidget {
-  const OfferCard({
-    Key? key,
-    required this.name,
-    required this.img,
-    required this.description,
-    required this.title,
-    required this.link,
-    required this.index,
-  }) : super(key: key);
-
-  final String name;
-  final String img;
-  final String description;
-  final String title;
-  final String link;
-  final int index;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: 10,
-        right: index.isEven == false ? 10 : 0,
-        left: index.isOdd == false ? 10 : 0,
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 2,
-              spreadRadius: 3,
-              color: Colors.grey,
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Text(
-              name,
-            ),
-            Image.network(
-              img,
-            ),
-            Text(
-              title,
-            ),
-            Text(
-              description,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            Text('More Details'),
           ],
         ),
       ),

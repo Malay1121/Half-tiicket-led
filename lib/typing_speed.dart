@@ -22,14 +22,60 @@ class TypingSpeed extends StatefulWidget {
 }
 
 var _loading = true;
+List word = [];
+List userWord = [];
+TextEditingController _controller = TextEditingController();
+String text = '';
+int counter = 0;
+List correct = [
+  Color(0xFFFBC63C),
+  Color(0xFFFBC63C),
+  Color(0xFFFBC63C),
+  Color(0xFFFBC63C),
+  Color(0xFFFBC63C),
+  Color(0xFFFBC63C),
+  Color(0xFFFBC63C),
+  Color(0xFFFBC63C),
+  Color(0xFFFBC63C),
+  Color(0xFFFBC63C),
+  Color(0xFFFBC63C),
+  Color(0xFFFBC63C),
+  Color(0xFFFBC63C),
+  Color(0xFFFBC63C),
+  Color(0xFFFBC63C)
+];
 
 class _TypingSpeedState extends State<TypingSpeed> {
   @override
   void initState() {
-    // TODO: implement initState
-    Timer.periodic(Duration(seconds: 1), (s) {
-      setState(() {});
+    setState(() {
+      counter = 0;
+      word = [];
+      List correct = [
+        Color(0xFFFBC63C),
+        Color(0xFFFBC63C),
+        Color(0xFFFBC63C),
+        Color(0xFFFBC63C),
+        Color(0xFFFBC63C),
+        Color(0xFFFBC63C),
+        Color(0xFFFBC63C),
+        Color(0xFFFBC63C),
+        Color(0xFFFBC63C),
+        Color(0xFFFBC63C),
+        Color(0xFFFBC63C),
+        Color(0xFFFBC63C),
+        Color(0xFFFBC63C),
+        Color(0xFFFBC63C),
+        Color(0xFFFBC63C)
+      ];
+      userWord = [];
+      text = '';
+      _controller = TextEditingController(text: '');
     });
+    // TODO: implement initState
+    // Timer.periodic(Duration(seconds: 1), (s) {
+    //   setState(() {});
+    // });
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await http.get(
         Uri.parse(
@@ -44,8 +90,14 @@ class _TypingSpeedState extends State<TypingSpeed> {
           _data = json.decode(response.body).cast<String>().toList();
         });
       });
-
-      print(_data);
+      _data[0].split('').forEach((ch) {
+        setState(() {
+          word.add({counter: ch});
+          counter++;
+        });
+      });
+      // word.removeAt(0);
+      print(word);
     });
   }
 
@@ -200,30 +252,71 @@ class _TypingSpeedState extends State<TypingSpeed> {
                           width: responsiveWidth(283, context),
                           height: responsiveHeight(68, context),
                           child: Center(
-                            child: AutoSizeText(
-                              _data[0].toString(),
-                              style: GoogleFonts.outfit(
-                                textStyle: TextStyle(
-                                  fontSize: responsiveText(30, context),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
+                            child: Row(
+                              children: [
+                                for (Map character in word)
+                                  AutoSizeText(
+                                    character.values.toList()[0].toString(),
+                                    style: GoogleFonts.outfit(
+                                      textStyle: TextStyle(
+                                        color:
+                                            correct[character.keys.toList()[0]],
+                                        fontSize: responsiveText(30, context),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
                           ),
                         ),
                       ),
                     ),
                     TextField(
-                      onChanged: (s) {
-                        if (s != '' || s != null) {
+                      controller: _controller,
+                      onSubmitted: (s) {
+                        List userWord = [];
+                        s.split('').forEach((ch) {
                           setState(() {
-                            click = false;
+                            userWord.add({_controller.text.length: ch});
+                          });
+                        });
+                        // userWord.removeAt(0);
+                        if (word == userWord) {
+                          setState(() {
+                            correct[userWord.length] = Color(0xFF903838);
                           });
                         } else {
                           setState(() {
-                            click = true;
+                            correct[userWord.length] = Colors.red;
                           });
                         }
+
+                        print(correct);
+                      },
+                      onChanged: (s) {
+                        setState(() {
+                          userWord = [];
+                        });
+                        _controller.text.split('').forEach((ch) {
+                          setState(() {
+                            userWord.add({_controller.text.length - 1: ch});
+                          });
+                        });
+                        // userWord.removeAt(0);
+                        print(userWord[userWord.length - 1]);
+                        if (word[userWord.length - 1] ==
+                            userWord[userWord.length - 1]) {
+                          setState(() {
+                            correct[userWord.length - 1] = Color(0xFF903838);
+                          });
+                        } else {
+                          setState(() {
+                            correct[userWord.length - 1] = Colors.red;
+                          });
+                        }
+
+                        print(correct);
                       },
                     ),
                   ],
