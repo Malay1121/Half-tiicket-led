@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:leaderboard/leaderboard.dart';
 import 'package:leaderboard/slide_puzzle.dart';
 import 'package:leaderboard/typing_speed.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class ContestsScreen extends StatefulWidget {
   const ContestsScreen({super.key});
@@ -13,6 +14,7 @@ class ContestsScreen extends StatefulWidget {
   State<ContestsScreen> createState() => _ContestsScreenState();
 }
 
+bool _loading = true;
 dynamic _data = {
   "contests": [
     {
@@ -40,54 +42,65 @@ class _ContestsScreenState extends State<ContestsScreen> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var response = await http.get(
+      await http.get(
         Uri.parse(
           'https://api.halftiicket.com/getContests',
         ),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-      );
-      setState(() {
-        _data = jsonDecode(response.body) as Map;
+      ).then((response) {
+        setState(() {
+          _loading = false;
+          _data = jsonDecode(response.body) as Map;
+        });
       });
+
       print(_data);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          for (var contest in _data['contests'])
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LeaderBoard(id: contest['_id'])));
-              },
-              child: Container(
-                child: Column(
-                  children: [
-                    Image.network(
-                      contest['banner'].toString(),
-                      width: 300,
-                      height: 100,
-                    ),
-                    Image.network(
-                      contest['img'].toString(),
-                      width: 100,
-                      height: 100,
-                    ),
-                    Text(contest['name'].toString()),
-                    Text(contest['type'].toString()),
-                  ],
+    return ModalProgressHUD(
+      inAsyncCall: _loading,
+      progressIndicator: CircularProgressIndicator(
+        color: Color(0xFFFBE43C),
+        backgroundColor: Color(0xFFFFD18B),
+      ),
+      child: Scaffold(
+        body: Column(
+          children: [
+            for (var contest in _data['contests'])
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              LeaderBoard(id: contest['_id'])));
+                },
+                child: Container(
+                  child: Column(
+                    children: [
+                      Image.network(
+                        contest['banner'].toString(),
+                        width: 300,
+                        height: 100,
+                      ),
+                      Image.network(
+                        contest['img'].toString(),
+                        width: 100,
+                        height: 100,
+                      ),
+                      Text(contest['name'].toString()),
+                      Text(contest['type'].toString()),
+                    ],
+                  ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

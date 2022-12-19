@@ -44,6 +44,8 @@ dependencies:
   google_fonts: ^3.0.1
   auto_size_text: ^3.0.0
   stop_watch_timer: ^2.0.0
+  dotted_border: ^2.0.0+3
+  modal_progress_hud_nsn: ^0.3.0
 
 dev_dependencies:
   flutter_test:

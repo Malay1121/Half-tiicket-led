@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         '/votes': (context) => VotingScreen(),
         '/voting': (context) => PublicVoting(),
         '/login': (context) => LoginScreen(),
-        '/mathquiz':(context) => MathQuiz(),
+        '/639fe06f6deeaf05475f1775': (context) => MathQuiz(),
         '/register': (context) => RegisterationScreen(),
         '/offers': (context) => OffersPage(),
         '/contests': (context) => ContestsScreen(),

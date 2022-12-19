@@ -216,7 +216,7 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
                     key: globalKey,
                     size: constraints.biggest,
                     // set size puzzle
-                    sizePuzzle: 4,
+                    sizePuzzle: 3,
                     imageBckGround: Image(
                       // u can use your own image
                       image: NetworkImage(
