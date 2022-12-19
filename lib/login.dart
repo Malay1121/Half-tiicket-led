@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: GoogleFonts.inter(
                       textStyle: TextStyle(
                         color: Color(0xFF77B255),
-                        fontSize: responsiveText(20, context),
+                        fontSize: responsiveTextLogin(20, context),
                         fontWeight: FontWeight.w600,
                         decoration: TextDecoration.none,
                       ),
@@ -91,10 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Stack(
           children: [
             Positioned(
-              top: responsiveHeight(148, context),
+              top: responsiveHeightLogin(148, context),
               child: Container(
-                height: responsiveHeight(732, context),
-                width: responsiveWidth(390, context),
+                height: responsiveHeightLogin(732, context),
+                width: responsiveWidthLogin(390, context),
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.fill,
@@ -104,23 +104,23 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             Positioned(
-              top: responsiveHeight(80, context),
+              top: responsiveHeightLogin(80, context),
               child: SizedBox(
-                width: responsiveWidth(390, context),
+                width: responsiveWidthLogin(390, context),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
                       'assets/logo.png',
                       fit: BoxFit.fitHeight,
-                      height: responsiveHeight(150, context),
+                      height: responsiveHeightLogin(150, context),
                     ),
                     SizedBox(
-                      height: responsiveHeight(136, context),
+                      height: responsiveHeightLogin(136, context),
                     ),
                     SizedBox(
-                      width: responsiveWidth(88, context),
-                      height: responsiveHeight(40, context),
+                      width: responsiveWidthLogin(88, context),
+                      height: responsiveHeightLogin(40, context),
                       child: Center(
                         child: AutoSizeText(
                           'Login',
@@ -128,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: GoogleFonts.outfit(
                             textStyle: TextStyle(
                               color: Color(0xFF903838),
-                              fontSize: responsiveText(32, context),
+                              fontSize: responsiveTextLogin(32, context),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -136,11 +136,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: responsiveHeight(6, context),
+                      height: responsiveHeightLogin(6, context),
                     ),
                     SizedBox(
-                      width: responsiveWidth(205, context),
-                      height: responsiveHeight(20, context),
+                      width: responsiveWidthLogin(205, context),
+                      height: responsiveHeightLogin(20, context),
                       child: Center(
                         child: AutoSizeText(
                           'Log In & Give Vote to bands',
@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: GoogleFonts.outfit(
                             textStyle: TextStyle(
                               color: Colors.black,
-                              fontSize: responsiveText(16, context),
+                              fontSize: responsiveTextLogin(16, context),
                               fontWeight: FontWeight.w300,
                             ),
                           ),
@@ -156,18 +156,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: responsiveHeight(24, context),
+                      height: responsiveHeightLogin(24, context),
                     ),
                     SizedBox(
-                      width: responsiveWidth(325, context),
-                      height: responsiveHeight(58, context),
+                      width: responsiveWidthLogin(325, context),
+                      height: responsiveHeightLogin(58, context),
                       child: TextField(
                         controller: _emailController,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(
-                            left: responsiveWidth(36, context),
-                            top: responsiveHeight(19, context),
-                            bottom: responsiveHeight(19, context),
+                            left: responsiveWidthLogin(36, context),
+                            top: responsiveHeightLogin(19, context),
+                            bottom: responsiveHeightLogin(19, context),
                           ),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
@@ -187,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintStyle: GoogleFonts.outfit(
                             textStyle: TextStyle(
                               color: Color(0xFF7C5037),
-                              fontSize: responsiveText(16, context),
+                              fontSize: responsiveTextLogin(16, context),
                               fontWeight: FontWeight.w300,
                             ),
                           ),
@@ -195,19 +195,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: responsiveHeight(16, context),
+                      height: responsiveHeightLogin(16, context),
                     ),
                     SizedBox(
-                      width: responsiveWidth(325, context),
-                      height: responsiveHeight(58, context),
+                      width: responsiveWidthLogin(325, context),
+                      height: responsiveHeightLogin(58, context),
                       child: TextField(
                         controller: _passwordController,
+                        obscureText: true,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(
-                            vertical: (responsiveHeight(58, context) -
-                                    responsiveText(16, context)) /
+                            vertical: (responsiveHeightLogin(58, context) -
+                                    responsiveTextLogin(16, context)) /
                                 2,
-                            horizontal: responsiveWidth(36, context),
+                            horizontal: responsiveWidthLogin(36, context),
                             // bottom: responsiveHeight(19, context),
                           ),
                           border: OutlineInputBorder(
@@ -228,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintStyle: GoogleFonts.outfit(
                             textStyle: TextStyle(
                               color: Color(0xFF7C5037),
-                              fontSize: responsiveText(16, context),
+                              fontSize: responsiveTextLogin(16, context),
                               fontWeight: FontWeight.w300,
                             ),
                           ),
@@ -236,11 +237,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: responsiveHeight(162, context),
+                      height: responsiveHeightLogin(162, context),
                     ),
                     SizedBox(
-                      width: responsiveWidth(234, context),
-                      height: responsiveHeight(20, context),
+                      width: responsiveWidthLogin(234, context),
+                      height: responsiveHeightLogin(20, context),
                       child: Center(
                         child: AutoSizeText.rich(
                           TextSpan(
@@ -249,7 +250,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               textStyle: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w300,
-                                fontSize: responsiveText(16, context),
+                                fontSize: responsiveTextLogin(16, context),
                               ),
                             ),
                             children: [
@@ -259,7 +260,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     textStyle: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: responsiveText(16, context),
+                                      fontSize:
+                                          responsiveTextLogin(16, context),
                                     ),
                                   ),
                                   recognizer: TapGestureRecognizer()
@@ -275,7 +277,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: responsiveHeight(20, context),
+                      height: responsiveHeightLogin(20, context),
                     ),
                     GestureDetector(
                       onTap: () async {
@@ -316,8 +318,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       },
                       child: Container(
-                        height: responsiveHeight(58, context),
-                        width: responsiveWidth(326, context),
+                        height: responsiveHeightLogin(58, context),
+                        width: responsiveWidthLogin(326, context),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Colors.white,
@@ -336,15 +338,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Center(
                           child: Center(
                             child: SizedBox(
-                              height: responsiveHeight(25, context),
-                              width: responsiveWidth(76, context),
+                              height: responsiveHeightLogin(25, context),
+                              width: responsiveWidthLogin(76, context),
                               child: Center(
                                 child: AutoSizeText(
                                   'Login',
                                   style: GoogleFonts.outfit(
                                     textStyle: TextStyle(
                                       color: Colors.white,
-                                      fontSize: responsiveText(20, context),
+                                      fontSize:
+                                          responsiveTextLogin(20, context),
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),

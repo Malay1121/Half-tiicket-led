@@ -33,10 +33,10 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
         child: Stack(
           children: [
             Positioned(
-              top: responsiveHeight(148, context),
+              top: responsiveHeightLogin(148, context),
               child: Container(
-                height: responsiveHeight(732, context),
-                width: responsiveWidth(390, context),
+                height: responsiveHeightLogin(732, context),
+                width: responsiveWidthLogin(390, context),
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.fill,
@@ -46,23 +46,23 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
               ),
             ),
             Positioned(
-              top: responsiveHeight(80, context),
+              top: responsiveHeightLogin(80, context),
               child: SizedBox(
-                width: responsiveWidth(390, context),
+                width: responsiveWidthLogin(390, context),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
                       'assets/logo.png',
                       fit: BoxFit.fitHeight,
-                      height: responsiveHeight(150, context),
+                      height: responsiveHeightLogin(150, context),
                     ),
                     SizedBox(
-                      height: responsiveHeight(136, context),
+                      height: responsiveHeightLogin(136, context),
                     ),
                     SizedBox(
-                      width: responsiveWidth(193, context),
-                      height: responsiveHeight(40, context),
+                      width: responsiveWidthLogin(193, context),
+                      height: responsiveHeightLogin(40, context),
                       child: Center(
                         child: AutoSizeText(
                           'Register Now',
@@ -70,7 +70,7 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                           style: GoogleFonts.outfit(
                             textStyle: TextStyle(
                               color: Color(0xFF903838),
-                              fontSize: responsiveText(32, context),
+                              fontSize: responsiveTextLogin(32, context),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -78,11 +78,11 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: responsiveHeight(6, context),
+                      height: responsiveHeightLogin(6, context),
                     ),
                     SizedBox(
-                      width: responsiveWidth(222, context),
-                      height: responsiveHeight(20, context),
+                      width: responsiveWidthLogin(222, context),
+                      height: responsiveHeightLogin(20, context),
                       child: Center(
                         child: AutoSizeText(
                           'Register & Give Vote to bands',
@@ -90,7 +90,7 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                           style: GoogleFonts.outfit(
                             textStyle: TextStyle(
                               color: Colors.black,
-                              fontSize: responsiveText(16, context),
+                              fontSize: responsiveTextLogin(16, context),
                               fontWeight: FontWeight.w300,
                             ),
                           ),
@@ -98,18 +98,18 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: responsiveHeight(24, context),
+                      height: responsiveHeightLogin(24, context),
                     ),
                     SizedBox(
-                      width: responsiveWidth(325, context),
-                      height: responsiveHeight(58, context),
+                      width: responsiveWidthLogin(325, context),
+                      height: responsiveHeightLogin(58, context),
                       child: TextField(
                         controller: _nameController,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(
-                            left: responsiveWidth(36, context),
-                            top: responsiveHeight(19, context),
-                            bottom: responsiveHeight(19, context),
+                            left: responsiveWidthLogin(36, context),
+                            top: responsiveHeightLogin(19, context),
+                            bottom: responsiveHeightLogin(19, context),
                           ),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
@@ -129,7 +129,7 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                           hintStyle: GoogleFonts.outfit(
                             textStyle: TextStyle(
                               color: Color(0xFF7C5037),
-                              fontSize: responsiveText(16, context),
+                              fontSize: responsiveTextLogin(16, context),
                               fontWeight: FontWeight.w300,
                             ),
                           ),
@@ -137,19 +137,19 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: responsiveHeight(16, context),
+                      height: responsiveHeightLogin(16, context),
                     ),
                     SizedBox(
-                      width: responsiveWidth(325, context),
-                      height: responsiveHeight(58, context),
+                      width: responsiveWidthLogin(325, context),
+                      height: responsiveHeightLogin(58, context),
                       child: TextField(
                         controller: _emailController,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(
-                            vertical: (responsiveHeight(58, context) -
-                                    responsiveText(16, context)) /
+                            vertical: (responsiveHeightLogin(58, context) -
+                                    responsiveTextLogin(16, context)) /
                                 2,
-                            horizontal: responsiveWidth(36, context),
+                            horizontal: responsiveWidthLogin(36, context),
                           ),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
@@ -169,7 +169,7 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                           hintStyle: GoogleFonts.outfit(
                             textStyle: TextStyle(
                               color: Color(0xFF7C5037),
-                              fontSize: responsiveText(16, context),
+                              fontSize: responsiveTextLogin(16, context),
                               fontWeight: FontWeight.w300,
                             ),
                           ),
@@ -177,19 +177,20 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: responsiveHeight(16, context),
+                      height: responsiveHeightLogin(16, context),
                     ),
                     SizedBox(
-                      width: responsiveWidth(325, context),
-                      height: responsiveHeight(58, context),
+                      width: responsiveWidthLogin(325, context),
+                      height: responsiveHeightLogin(58, context),
                       child: TextField(
                         controller: _passwordController,
+                        obscureText: true,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(
-                            vertical: (responsiveHeight(58, context) -
-                                    responsiveText(16, context)) /
+                            vertical: (responsiveHeightLogin(58, context) -
+                                    responsiveTextLogin(16, context)) /
                                 2,
-                            horizontal: responsiveWidth(36, context),
+                            horizontal: responsiveWidthLogin(36, context),
                             // bottom: responsiveHeight(19, context),
                           ),
                           border: OutlineInputBorder(
@@ -210,7 +211,7 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                           hintStyle: GoogleFonts.outfit(
                             textStyle: TextStyle(
                               color: Color(0xFF7C5037),
-                              fontSize: responsiveText(16, context),
+                              fontSize: responsiveTextLogin(16, context),
                               fontWeight: FontWeight.w300,
                             ),
                           ),
@@ -218,17 +219,17 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: responsiveHeight(16, context),
+                      height: responsiveHeightLogin(16, context),
                     ),
                     SizedBox(
-                      width: responsiveWidth(325, context),
-                      height: responsiveHeight(58, context),
+                      width: responsiveWidthLogin(325, context),
+                      height: responsiveHeightLogin(58, context),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: responsiveWidth(125, context),
-                            height: responsiveHeight(58, context),
+                            width: responsiveWidthLogin(125, context),
+                            height: responsiveHeightLogin(58, context),
                             decoration: BoxDecoration(
                               color: Color(0xFFFEFBDD),
                               borderRadius: BorderRadius.circular(37),
@@ -238,24 +239,24 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                               ),
                             ),
                             child: SizedBox(
-                              width: responsiveWidth(64, context),
-                              height: responsiveHeight(34, context),
+                              width: responsiveWidthLogin(64, context),
+                              height: responsiveHeightLogin(34, context),
                               child: Row(
                                 children: [
                                   SizedBox(
-                                    width: responsiveWidth(36, context),
+                                    width: responsiveWidthLogin(36, context),
                                   ),
                                   SizedBox(
-                                    width: responsiveWidth(29, context),
-                                    height: responsiveHeight(20, context),
+                                    width: responsiveWidthLogin(29, context),
+                                    height: responsiveHeightLogin(20, context),
                                     child: Center(
                                       child: AutoSizeText(
                                         _age <= 0 ? 'Age' : _age.toString(),
                                         style: GoogleFonts.outfit(
                                           textStyle: TextStyle(
                                             color: Color(0xFF7C5037),
-                                            fontSize:
-                                                responsiveText(16, context),
+                                            fontSize: responsiveTextLogin(
+                                                16, context),
                                             fontWeight: FontWeight.w300,
                                           ),
                                         ),
@@ -263,17 +264,19 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: responsiveWidth(19, context),
+                                    width: responsiveWidthLogin(19, context),
                                   ),
                                   SizedBox(
-                                    height: responsiveHeight(34, context),
+                                    height: responsiveHeightLogin(34, context),
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         SizedBox(
-                                          height: responsiveHeight(16, context),
-                                          width: responsiveWidth(16, context),
+                                          height: responsiveHeightLogin(
+                                              16, context),
+                                          width:
+                                              responsiveWidthLogin(16, context),
                                           child: GestureDetector(
                                             onTap: () {
                                               setState(() {
@@ -289,8 +292,10 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                           ),
                                         ),
                                         SizedBox(
-                                          height: responsiveHeight(16, context),
-                                          width: responsiveWidth(16, context),
+                                          height: responsiveHeightLogin(
+                                              16, context),
+                                          width:
+                                              responsiveWidthLogin(16, context),
                                           child: GestureDetector(
                                             onTap: () {
                                               setState(() {
@@ -313,24 +318,25 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                             ),
                           ),
                           SizedBox(
-                            width: responsiveWidth(184, context),
-                            height: responsiveHeight(58, context),
+                            width: responsiveWidthLogin(184, context),
+                            height: responsiveHeightLogin(58, context),
                             child: TextField(
                               controller: _phoneController,
                               keyboardType: TextInputType.phone,
                               decoration: InputDecoration(
                                 prefix: Padding(
                                   padding: EdgeInsets.only(
-                                      left: responsiveWidth(10, context)),
+                                      left: responsiveWidthLogin(10, context)),
                                   child: SizedBox(
-                                    width: responsiveWidth(23, context),
-                                    height: responsiveHeight(20, context),
+                                    width: responsiveWidthLogin(23, context),
+                                    height: responsiveHeightLogin(20, context),
                                     child: AutoSizeText(
                                       '+91',
                                       style: GoogleFonts.outfit(
                                         textStyle: TextStyle(
                                           color: Color(0xFF7C5037),
-                                          fontSize: responsiveText(16, context),
+                                          fontSize:
+                                              responsiveTextLogin(16, context),
                                           fontWeight: FontWeight.w300,
                                         ),
                                       ),
@@ -338,8 +344,9 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                   ),
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
-                                  vertical: (responsiveHeight(58, context) -
-                                          responsiveText(16, context)) /
+                                  vertical: (responsiveHeightLogin(
+                                              58, context) -
+                                          responsiveTextLogin(16, context)) /
                                       2,
                                 ),
                                 border: OutlineInputBorder(
@@ -360,7 +367,7 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                 hintStyle: GoogleFonts.outfit(
                                   textStyle: TextStyle(
                                     color: Color(0xFF7C5037),
-                                    fontSize: responsiveText(16, context),
+                                    fontSize: responsiveTextLogin(16, context),
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
@@ -371,11 +378,11 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: responsiveHeight(17, context),
+                      height: responsiveHeightLogin(17, context),
                     ),
                     SizedBox(
-                      width: responsiveWidth(231, context),
-                      height: responsiveHeight(20, context),
+                      width: responsiveWidthLogin(231, context),
+                      height: responsiveHeightLogin(20, context),
                       child: Center(
                         child: AutoSizeText.rich(
                           TextSpan(
@@ -384,7 +391,7 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                               textStyle: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w300,
-                                fontSize: responsiveText(16, context),
+                                fontSize: responsiveTextLogin(16, context),
                               ),
                             ),
                             children: [
@@ -394,7 +401,8 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                                     textStyle: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: responsiveText(16, context),
+                                      fontSize:
+                                          responsiveTextLogin(16, context),
                                     ),
                                   ),
                                   recognizer: TapGestureRecognizer()
@@ -410,7 +418,7 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: responsiveHeight(20, context),
+                      height: responsiveHeightLogin(20, context),
                     ),
                     GestureDetector(
                       onTap: () async {
@@ -473,8 +481,8 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                         });
                       },
                       child: Container(
-                        height: responsiveHeight(58, context),
-                        width: responsiveWidth(326, context),
+                        height: responsiveHeightLogin(58, context),
+                        width: responsiveWidthLogin(326, context),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Colors.white,
@@ -492,15 +500,15 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                         ),
                         child: Center(
                           child: SizedBox(
-                            height: responsiveHeight(25, context),
-                            width: responsiveWidth(76, context),
+                            height: responsiveHeightLogin(25, context),
+                            width: responsiveWidthLogin(76, context),
                             child: Center(
                               child: AutoSizeText(
                                 'Register',
                                 style: GoogleFonts.outfit(
                                   textStyle: TextStyle(
                                     color: Colors.white,
-                                    fontSize: responsiveText(20, context),
+                                    fontSize: responsiveTextLogin(20, context),
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),

@@ -64,7 +64,7 @@ class _MathQuizState extends State<MathQuiz> {
                       height: responsiveHeight(57, context),
                       child: Center(
                         child: AutoSizeText(
-                          '3 + 4 * 9 = ...',
+                          '3 + 4 * 9 = ..',
                           style: GoogleFonts.outfit(
                             fontSize: responsiveText(45, context),
                             fontWeight: FontWeight.w700,
