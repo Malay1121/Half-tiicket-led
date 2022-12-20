@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:leaderboard/leaderboard.dart';
 import 'package:leaderboard/responsive.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,7 +14,26 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-dynamic _data = {};
+dynamic _data = {
+  "contests": [
+    {
+      "_id": "639cda5575f95e42b54ff971",
+      "type": "puzzle",
+      "name": "insta Puzzle",
+      "img":
+          "https://pbs.twimg.com/profile_images/1526231349354303489/3Bg-2ZsT_400x400.jpg",
+      "banner": "https://www.rupay.co.in/images/rupay/fampay-card.png"
+    },
+    {
+      "_id": "639cdb1675f95e42b54ff972",
+      "type": "typing",
+      "name": "fampay typing",
+      "img":
+          "https://play-lh.googleusercontent.com/yZNjrlHTEGYSAoIKLFd4VMGtRfbE0HPva-ElVRmzll7aE2VPD15gVCu64UaCZoQsqA",
+      "banner": "https://i.ytimg.com/vi/tqBiHY6Cvyw/maxresdefault.jpg"
+    }
+  ]
+};
 bool _loading = true;
 
 class _HomePageState extends State<HomePage> {
@@ -319,93 +339,98 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     height: responsiveHeight(23, context),
                   ),
-                  Container(
-                    width: responsiveWidth(160, context),
-                    height: responsiveHeight(202, context),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xFFB77EFE),
-                          Color(0xFF8202E7),
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      image: DecorationImage(
-                        image: AssetImage(
-                          'assets/bighome.png',
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/spin-the-wheel');
+                    },
+                    child: Container(
+                      width: responsiveWidth(160, context),
+                      height: responsiveHeight(202, context),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFFB77EFE),
+                            Color(0xFF8202E7),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
                         ),
-                        fit: BoxFit.fill,
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: responsiveWidth(27, context),
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'assets/bighome.png',
+                          ),
+                          fit: BoxFit.fill,
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, '/spin-the-wheel');
-                          },
-                          child: Container(
-                            width: responsiveWidth(66, context),
-                            height: responsiveHeight(66, context),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: AssetImage(
-                                  'assets/spinwheel.png',
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: responsiveWidth(27, context),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/spin-the-wheel');
+                            },
+                            child: Container(
+                              width: responsiveWidth(66, context),
+                              height: responsiveHeight(66, context),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                    'assets/spinwheel.png',
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: responsiveWidth(14, context),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: responsiveHeight(25, context),
-                              width: responsiveWidth(142, context),
-                              child: AutoSizeText(
-                                'Spin The Wheel',
-                                maxLines: 1,
-                                style: GoogleFonts.outfit(
-                                  textStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: responsiveText(20, context),
+                          SizedBox(
+                            width: responsiveWidth(14, context),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: responsiveHeight(25, context),
+                                width: responsiveWidth(142, context),
+                                child: AutoSizeText(
+                                  'Spin The Wheel',
+                                  maxLines: 1,
+                                  style: GoogleFonts.outfit(
+                                    textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: responsiveText(20, context),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: responsiveHeight(7, context),
-                            ),
-                            SizedBox(
-                              width: responsiveWidth(206, context),
-                              height: responsiveHeight(20, context),
-                              child: AutoSizeText(
-                                'Spin the wheel and win prizes',
-                                maxLines: 2,
-                                style: GoogleFonts.outfit(
-                                  textStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: responsiveText(16, context),
+                              SizedBox(
+                                height: responsiveHeight(7, context),
+                              ),
+                              SizedBox(
+                                width: responsiveWidth(206, context),
+                                height: responsiveHeight(20, context),
+                                child: AutoSizeText(
+                                  'Spin the wheel and win prizes',
+                                  maxLines: 2,
+                                  style: GoogleFonts.outfit(
+                                    textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: responsiveText(16, context),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -434,7 +459,11 @@ class _HomePageState extends State<HomePage> {
                           bottom: responsiveHeight(20, context)),
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, '/${contest['_id']}');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      LeaderBoard(id: contest['_id'])));
                         },
                         child: Container(
                           width: responsiveWidth(343, context),

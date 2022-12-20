@@ -14,6 +14,7 @@ import 'package:image/image.dart' as image;
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
+import 'package:leaderboard/leaderboard.dart';
 import 'package:leaderboard/main.dart';
 import 'package:leaderboard/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -666,7 +667,9 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
           'contest_id': id.toString(),
           'time': _stopwatch.elapsed,
         }),
-      );
+      ).then((value) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LeaderBoard(id: widget.id)));
+      });
       print("Success");
       setState(() {});
       success = true;

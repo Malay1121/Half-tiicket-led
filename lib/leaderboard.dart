@@ -291,7 +291,14 @@ class _LeaderBoardState extends State<LeaderBoard> {
                 ),
                 Spacer(),
                 GestureDetector(
-                  onTap: (() => channel.sink.add('data')),
+                  onTap: (() {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Container();
+                        });
+                    Navigator.pushNamed(context, '/${widget.id}');
+                  }),
                   child: Container(
                     height: responsiveHeightLogin(58, context),
                     width: responsiveWidthLogin(326, context),
