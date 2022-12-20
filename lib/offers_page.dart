@@ -192,7 +192,19 @@ class OffersPageState extends State<OffersPage> {
                                         showCupertinoModalBottomSheet(
                                             context: context,
                                             builder: (BuildContext context) {
-                                              return Container();
+                                              return Container(
+                                                height: responsiveHeight(
+                                                    561, context),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(60),
+                                                    topRight:
+                                                        Radius.circular(60),
+                                                  ),
+                                                ),
+                                              );
                                             });
                                       },
                                       child: Container(
