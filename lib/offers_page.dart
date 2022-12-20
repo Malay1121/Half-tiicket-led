@@ -190,22 +190,222 @@ class OffersPageState extends State<OffersPage> {
                                     GestureDetector(
                                       onTap: () {
                                         showCupertinoModalBottomSheet(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return Container(
-                                                height: responsiveHeight(
-                                                    561, context),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(60),
-                                                    topRight:
-                                                        Radius.circular(60),
-                                                  ),
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return Container(
+                                              height: responsiveHeight(
+                                                  561, context),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(60),
+                                                  topRight: Radius.circular(60),
                                                 ),
-                                              );
-                                            });
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Expanded(
+                                                    child: ListView(
+                                                      children: [
+                                                        Column(
+                                                          children: [
+                                                            SizedBox(
+                                                              height:
+                                                                  responsiveHeight(
+                                                                      40,
+                                                                      context),
+                                                            ),
+                                                            SizedBox(
+                                                              height:
+                                                                  responsiveHeight(
+                                                                      30,
+                                                                      context),
+                                                              width:
+                                                                  responsiveWidth(
+                                                                      141,
+                                                                      context),
+                                                              child: Center(
+                                                                child:
+                                                                    AutoSizeText(
+                                                                  'Offer Details',
+                                                                  maxLines: 1,
+                                                                  style:
+                                                                      GoogleFonts
+                                                                          .outfit(
+                                                                    textStyle:
+                                                                        TextStyle(
+                                                                      decoration:
+                                                                          TextDecoration
+                                                                              .none,
+                                                                      color: Color(
+                                                                          0xFF903838),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      fontSize:
+                                                                          responsiveText(
+                                                                              24,
+                                                                              context),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height:
+                                                                  responsiveHeight(
+                                                                      20,
+                                                                      context),
+                                                            ),
+                                                            SizedBox(
+                                                              height:
+                                                                  responsiveHeight(
+                                                                      130,
+                                                                      context),
+                                                              width:
+                                                                  responsiveWidth(
+                                                                      343,
+                                                                      context),
+                                                              child: Center(
+                                                                child:
+                                                                    AutoSizeText(
+                                                                  'Lorem ipsum dolor sit amet consectetur. Vestibulum sit pharetra felis mauris sed nibh in pharetra. Et nibh lectus amet donec proin. Sed ultrices turpis nulla amet ut vel. Enim euismod sit etiam purus nullam viverra. Senectus purus.',
+                                                                  maxLines: 5,
+                                                                  style:
+                                                                      GoogleFonts
+                                                                          .outfit(
+                                                                    textStyle: TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w300,
+                                                                        fontSize: responsiveText(
+                                                                            16,
+                                                                            context),
+                                                                        decoration:
+                                                                            TextDecoration.none),
+                                                                  ),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height:
+                                                                  responsiveHeight(
+                                                                      20,
+                                                                      context),
+                                                            ),
+                                                            SizedBox(
+                                                              width:
+                                                                  responsiveWidth(
+                                                                      143,
+                                                                      context),
+                                                              height:
+                                                                  responsiveHeight(
+                                                                      26,
+                                                                      context),
+                                                              child:
+                                                                  AutoSizeText(
+                                                                'Terms & Conditions:',
+                                                                maxLines: 1,
+                                                                style:
+                                                                    GoogleFonts
+                                                                        .outfit(
+                                                                  textStyle:
+                                                                      TextStyle(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .none,
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontSize:
+                                                                        responsiveText(
+                                                                            15,
+                                                                            context),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height:
+                                                                  responsiveHeight(
+                                                                      150,
+                                                                      context),
+                                                            ),
+                                                            Container(
+                                                              height:
+                                                                  responsiveHeight(
+                                                                      54,
+                                                                      context),
+                                                              width:
+                                                                  responsiveWidth(
+                                                                      157,
+                                                                      context),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                gradient:
+                                                                    LinearGradient(
+                                                                  colors: [
+                                                                    Color(
+                                                                        0xFFF89A0B),
+                                                                    Color(
+                                                                        0xFFE97522),
+                                                                  ],
+                                                                  begin: Alignment
+                                                                      .topCenter,
+                                                                  end: Alignment
+                                                                      .bottomRight,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            90),
+                                                              ),
+                                                              child: SizedBox(
+                                                                height:
+                                                                    responsiveHeight(
+                                                                        25,
+                                                                        context),
+                                                                width:
+                                                                    responsiveWidth(
+                                                                        86,
+                                                                        context),
+                                                                child: Center(
+                                                                  child:
+                                                                      AutoSizeText(
+                                                                    'Get Offer',
+                                                                    style: GoogleFonts
+                                                                        .outfit(
+                                                                      textStyle:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                        fontSize: responsiveText(
+                                                                            20,
+                                                                            context),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
                                       },
                                       child: Container(
                                         height: responsiveHeight(54, context),

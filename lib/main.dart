@@ -14,6 +14,7 @@ import 'package:leaderboard/public_voting.dart';
 import 'package:leaderboard/register.dart';
 import 'package:leaderboard/responsive.dart';
 import 'package:leaderboard/slide_puzzle.dart';
+import 'package:leaderboard/spin_the_wheel.dart';
 import 'package:leaderboard/typing_speed.dart';
 import 'package:leaderboard/voting_screen.dart';
 
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
         '/votes': (context) => VotingScreen(),
         '/voting': (context) => PublicVoting(),
         '/login': (context) => LoginScreen(),
+        '/spin-the-wheel': (context) => SpinTheWheel(),
         '/639fe06f6deeaf05475f1775': (context) => MathQuiz(),
         '/register': (context) => RegisterationScreen(),
         '/offers': (context) => OffersPage(),

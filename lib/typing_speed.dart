@@ -207,7 +207,7 @@ class _TypingSpeedState extends State<TypingSpeed> {
                         print(_preferences.getString('_id'));
                         final response = await http.post(
                           Uri.parse(
-                              'api.halftiicket.com/addPlayerContest/${widget.id}?time=1'),
+                              'api.halftiicket.com/addPlayerContest/${widget.id}'),
                           headers: {
                             'Content-Type': 'application/json',
                             'x-api-key':
@@ -253,6 +253,7 @@ class _TypingSpeedState extends State<TypingSpeed> {
                           height: responsiveHeight(68, context),
                           child: Center(
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 for (Map character in word)
                                   AutoSizeText(
@@ -274,7 +275,7 @@ class _TypingSpeedState extends State<TypingSpeed> {
                     ),
                     TextField(
                       controller: _controller,
-                      onSubmitted: (s) {
+                      onSubmitted: (s) async {
                         List userWord = [];
                         s.split('').forEach((ch) {
                           setState(() {
@@ -291,10 +292,31 @@ class _TypingSpeedState extends State<TypingSpeed> {
                             correct[userWord.length] = Colors.red;
                           });
                         }
-
+                        SharedPreferences _preferences =
+                            await SharedPreferences.getInstance();
+                        if (s == _data[0].toString()) {
+                          _stopwatch.stop();
+                          setState(() {
+                            timeTaken = _stopwatch.elapsed.toString();
+                          });
+                          print(_preferences.getString('_id'));
+                          final response = await http.post(
+                            Uri.parse(
+                                'api.halftiicket.com/addPlayerContest/${widget.id}'),
+                            headers: {
+                              'Content-Type': 'application/json',
+                              'x-api-key':
+                                  _preferences.getString('_id').toString(),
+                            },
+                            body: jsonEncode({
+                              'contest_id': widget.id.toString(),
+                              'time': _stopwatch.elapsed.inSeconds,
+                            }),
+                          );
+                        }
                         print(correct);
                       },
-                      onChanged: (s) {
+                      onChanged: (s) async {
                         setState(() {
                           userWord = [];
                         });
@@ -315,7 +337,27 @@ class _TypingSpeedState extends State<TypingSpeed> {
                             correct[userWord.length - 1] = Colors.red;
                           });
                         }
-
+                        SharedPreferences _preferences =
+                            await SharedPreferences.getInstance();
+                        if (s == _data[0].toString()) {
+                          _stopwatch.stop();
+                          setState(() {
+                            timeTaken = _stopwatch.elapsed.toString();
+                          });
+                          final response = await http.post(
+                            Uri.parse(
+                                'https://api.halftiicket.com/addPlayerContest/${widget.id}'),
+                            headers: {
+                              'Content-Type': 'application/json',
+                              'x-api-key':
+                                  _preferences.getString('_id').toString(),
+                            },
+                            body: jsonEncode({
+                              'contest_id': widget.id.toString(),
+                              'time': _stopwatch.elapsed.inSeconds,
+                            }),
+                          );
+                        }
                         print(correct);
                       },
                     ),

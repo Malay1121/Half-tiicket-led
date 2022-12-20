@@ -37,23 +37,23 @@ class _VotingScreenState extends State<VotingScreen> {
         });
       });
 
-      //   var channel = WebSocketChannel.connect(
-      //     Uri.parse('ws://26.243.151.253::8000/ws/connect'),
-      //   );
-      //   channel.stream.listen((event) {
-      //     String data = event.toString();
+      var channel = WebSocketChannel.connect(
+        Uri.parse('wss://api.halftiicket.com/ws/votes'),
+      );
+      channel.stream.listen((event) {
+        String data = event.toString();
 
-      //     setState(() {
-      //       _votes = jsonDecode(data) == null
-      //           ? {
-      //               'name': 'Atharva',
-      //               'price': 10,
-      //               'image': 'http://172.105.41.217:8000/get-image/atharva_dalal',
-      //               'bid_by': null,
-      //             }
-      //           : jsonDecode(data);
-      //     });
-      //   });
+        setState(() {
+          _votes = jsonDecode(data) == null
+              ? {
+                  'name': 'Atharva',
+                  'price': 10,
+                  'image': 'http://172.105.41.217:8000/get-image/atharva_dalal',
+                  'bid_by': null,
+                }
+              : jsonDecode(data);
+        });
+      });
       //   print(_votes);
     });
   }

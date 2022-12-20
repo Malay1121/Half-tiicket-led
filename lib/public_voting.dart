@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:leaderboard/responsive.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 var _selectedBand = '';
@@ -257,6 +258,8 @@ class _PublicVotingState extends State<PublicVoting> {
               _selectedBand != ''
                   ? GestureDetector(
                       onTap: () async {
+                        SharedPreferences _preferences =
+                            await SharedPreferences.getInstance();
                         setState(() {
                           _loading = true;
                         });
@@ -266,6 +269,8 @@ class _PublicVotingState extends State<PublicVoting> {
                               'https://api.halftiicket.com/addVotes/$_selectedBand'),
                           headers: {
                             'Content-Type': 'application/json',
+                            'x-api-key':
+                                _preferences.getString('_id').toString(),
                           },
                           body: jsonEncode({'id': _selectedBand}),
                         )

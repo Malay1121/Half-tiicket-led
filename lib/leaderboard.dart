@@ -8,6 +8,7 @@ import 'package:leaderboard/responsive.dart';
 import 'package:leaderboard/slide_puzzle.dart';
 import 'package:leaderboard/typing_speed.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class LeaderBoard extends StatefulWidget {
   const LeaderBoard({super.key, required this.id});
@@ -58,6 +59,7 @@ dynamic _data = {
   ]
 };
 bool _loading = true;
+var channel;
 
 class _LeaderBoardState extends State<LeaderBoard> {
   @override
@@ -78,9 +80,28 @@ class _LeaderBoardState extends State<LeaderBoard> {
           _data = jsonDecode(response.body) as Map;
         });
       });
+      channel = WebSocketChannel.connect(
+        Uri.parse('wss://api.halftiicket.com/ws/${widget.id}'),
+      );
+      channel.stream.listen((event) {
+        String data = event.toString();
+
+        setState(() {
+          _data = jsonDecode(data) == null
+              ? {
+                  'name': 'Atharva',
+                  'price': 10,
+                  'image': 'http://172.105.41.217:8000/get-image/atharva_dalal',
+                  'bid_by': null,
+                }
+              : jsonDecode(data);
+        });
+      });
+      // channel.sink.add('data');
     });
   }
 
+// Navigator.pushNamed(context, '/${widget.id}')
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -270,7 +291,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                 ),
                 Spacer(),
                 GestureDetector(
-                  onTap: (() => Navigator.pushNamed(context, '/${widget.id}')),
+                  onTap: (() => channel.sink.add('data')),
                   child: Container(
                     height: responsiveHeightLogin(58, context),
                     width: responsiveWidthLogin(326, context),
