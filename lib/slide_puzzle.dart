@@ -139,27 +139,47 @@ final _stopwatch = Stopwatch();
 
 // make statefull widget for testing
 class SlidePuzzle extends StatefulWidget {
-  SlidePuzzle({Key? key}) : super(key: key);
+  SlidePuzzle({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _SlidePuzzleState createState() => _SlidePuzzleState();
 }
 
+bool _loading = true;
+dynamic _data;
+
 class _SlidePuzzleState extends State<SlidePuzzle> {
   // default put 2
-  int valueSlider = 4;
+  int valueSlider = 3;
   GlobalKey<_SlidePuzzleWidgetState> globalKey = GlobalKey();
 
   @override
   void initState() {
     // TODO: implement initState
-    Timer.periodic(Duration(seconds: 1), (s) {
-      setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var response = await http.get(
+        Uri.parse(
+          'https://api.halftiicket.com/getContests',
+        ),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      ).then((response) {
+        setState(() {
+          _loading = false;
+          _data = jsonDecode(response.body) as Map;
+        });
+      });
+      Timer.periodic(Duration(seconds: 1), (s) {
+        setState(() {});
+      });
+      // Future.delayed(Duration(minutes: 2), () {
+      //   Navigator.push(
+      //       context, MaterialPageRoute(builder: (context) => MainScreen()));
+      // });
     });
-    // Future.delayed(Duration(minutes: 2), () {
-    //   Navigator.push(
-    //       context, MaterialPageRoute(builder: (context) => MainScreen()));
-    // });
   }
 
   @override
@@ -169,66 +189,57 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Color(0xFFFFB802),
-        title: TextWidget(
-          "Slide Puzzle ${valueSlider}x$valueSlider",
-          color: Colors.white,
-          fontSize: 30,
-          overrideSizeStroke: false,
-        ),
-        leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
-          onTap: (() {
-            setState(() {
-              imageLoaded = false;
-            });
-            Navigator.pop(context);
-          }),
-        ),
-      ),
-      body: Container(
-        height: double.maxFinite,
-        width: double.maxFinite,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-            colors: [Color(0xFFFFD18B), Color(0xFFFBE43C)],
-          ),
-        ),
-        child: SafeArea(
-          child: Container(
-            margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return Container(
-                  width: constraints.biggest.width,
-                  // comment of this so our box can extends height
-                  // height: constraints.biggest.width,
-
-                  // if setup decoration,color must put inside
-                  // make puzzle widget
-                  child: SlidePuzzleWidget(
-                    key: globalKey,
-                    size: constraints.biggest,
-                    id: '639cda5575f95e42b54ff971',
-                    // set size puzzle
-                    sizePuzzle: 3,
-                    imageBckGround: Image(
-                      // u can use your own image
-                      image: NetworkImage(
-                          "https://play-lh.googleusercontent.com/IeNJWoKYx1waOhfWF6TiuSiWBLfqLb18lmZYXSgsH1fvb8v1IYiZr5aYWe0Gxu-pVZX3"),
-                    ),
-                  ),
-                );
-              },
+      body: Row(
+        children: [
+          Expanded(child: Text('ad')),
+          Container(
+            width: MediaQuery.of(context).size.width / 3,
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: [Color(0xFFFFD18B), Color(0xFFFBE43C)],
+              ),
             ),
-            // child: ,
+            child: SafeArea(
+              child: Container(
+                margin: EdgeInsets.all(10),
+                decoration: BoxDecoration(),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Container(
+                      width: constraints.biggest.width,
+                      // comment of this so our box can extends height
+                      // height: constraints.biggest.width,
+
+                      // if setup decoration,color must put inside
+                      // make puzzle widget
+                      child: SlidePuzzleWidget(
+                        key: globalKey,
+                        size: constraints.biggest,
+                        id: '639cda5575f95e42b54ff971',
+                        // set size puzzle
+                        sizePuzzle: 3,
+                        imageBckGround: Image(
+                          // u can use your own image
+                          image: NetworkImage(_data['contests']
+                              .toList()
+                              .where(
+                                  (i) => i['_id'] == '639cda5575f95e42b54ff971')
+                              .toList()[0]['img']
+                              .toString()),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                // child: ,
+              ),
+            ),
           ),
-        ),
+          Expanded(child: Text('ad')),
+        ],
       ),
     );
   }
@@ -275,7 +286,7 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
   List<int>? process;
   // flag finish swap
   bool finishSwap = false;
-
+  Widget result = SizedBox();
   @override
   Widget build(BuildContext context) {
     size = Size(widget.size.width - widget.innerPadding * 2,
@@ -289,7 +300,7 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
           height: responsiveHeight(57, context),
           width: responsiveWidth(325, context),
           child: AutoSizeText(
-            _stopwatch.elapsed.toString(),
+            (_stopwatch.elapsed.inSeconds).toString(),
             style: GoogleFonts.outfit(
               textStyle: TextStyle(
                 fontSize: responsiveText(40, context),
@@ -298,6 +309,7 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
             ),
           ),
         ),
+        result,
         // make 2 column, 1 for puzzle box, 2nd for button testing
         Container(
           width: widget.size.width,
@@ -418,44 +430,80 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
                   onTap: () {
                     generatePuzzle(widget.id);
                     _stopwatch.start();
-                  },
-                  child: Container(
-                    height: responsiveHeight(58, context),
-                    width: responsiveWidth(326, context),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(37),
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xFFFFB2B2),
-                          Color(0xFFFBC63C),
+                    setState(() {
+                      result = Column(
+                        children: [
+                          SizedBox(
+                            height: responsiveHeight(57, context),
+                            width: responsiveWidth(325, context),
+                            child: Center(
+                              child: AutoSizeText(
+                                'Arrange in order:-',
+                                style: GoogleFonts.outfit(
+                                  textStyle: TextStyle(
+                                    fontSize: responsiveText(40, context),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: responsiveWidth(200, context),
+                            height: responsiveHeight(200, context),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                              image: NetworkImage(_data['contests']
+                                  .toList()
+                                  .where((i) =>
+                                      i['_id'] == '639cda5575f95e42b54ff971')
+                                  .toList()[0]['img']
+                                  .toString()),
+                            )),
+                          ),
                         ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: Center(
-                      child: SizedBox(
-                        height: responsiveHeight(25, context),
-                        width: responsiveWidth(106, context),
-                        child: Center(
-                          child: AutoSizeText(
-                            imageLoaded == true ? 'Re-Start' : 'Start',
-                            style: GoogleFonts.outfit(
-                              textStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: responsiveText(20, context),
-                                fontWeight: FontWeight.w600,
+                      );
+                    });
+                  },
+                  child: imageLoaded == true
+                      ? SizedBox()
+                      : Container(
+                          height: responsiveHeight(58, context),
+                          width: responsiveWidth(326, context),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(37),
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xFFFFB2B2),
+                                Color(0xFFFBC63C),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                          child: Center(
+                            child: SizedBox(
+                              height: responsiveHeight(25, context),
+                              width: responsiveWidth(106, context),
+                              child: Center(
+                                child: AutoSizeText(
+                                  'Start',
+                                  style: GoogleFonts.outfit(
+                                    textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: responsiveText(20, context),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
                 ),
               ),
             ],
@@ -659,21 +707,25 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
       _stopwatch.stop();
       final response = await http
           .post(
-            Uri.parse('https://api.halftiicket.com/addUser'),
+            Uri.parse('https://api.halftiicket.com/addPlayerContest'),
             headers: {
               'Content-Type': 'application/json',
             },
             body: jsonEncode({
               'user_id': _preferences.getString('_id').toString(),
-              'contest_id': _preferences.getString('name'),
-              'time': _stopwatch.elapsed,
+              'contest_id': '639cda5575f95e42b54ff971',
+              'time': _stopwatch.elapsed.inMilliseconds / 1000,
             }),
           )
           .then((value) => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      ScorePage(timeElapsed: _stopwatch.elapsed, id: id))));
+                  builder: (context) => ScorePage(
+                        timeElapsed: _stopwatch.elapsed,
+                        id: id,
+                        rank: int.parse(
+                            jsonDecode(value.body)['rank'].toString()),
+                      ))));
       setState(() {});
       success = true;
     } else {

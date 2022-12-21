@@ -81,7 +81,7 @@ class _TypingSpeedState extends State<TypingSpeed> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await http.get(
         Uri.parse(
-          'https://api.halftiicket.com/',
+          'https://api.halftiicket.com/words',
         ),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -89,18 +89,10 @@ class _TypingSpeedState extends State<TypingSpeed> {
       ).then((response) {
         setState(() {
           _loading = false;
-          _data = json.decode(response.body)[0].toList() == null
-              ? ['haha']
-              : json.decode(response.body)[0].toList();
-          _data = _data[Random().nextInt(_data.length)];
+          _data = json.decode(response.body);
         });
       });
-      _data[0].split('').forEach((ch) {
-        setState(() {
-          word.add({counter: ch});
-          counter++;
-        });
-      });
+
       // word.removeAt(0);
       print(word);
     });
@@ -175,68 +167,68 @@ class _TypingSpeedState extends State<TypingSpeed> {
                           ),
                         ),
                       ),
-                      Text(_data[0].toString()),
-                      Text(_stopwatch.elapsed.toString()),
-                      SizedBox(
-                        width: 300,
-                        height: 30,
-                        child: TextField(
-                          onTap: () {
-                            _stopwatch.start();
-                          },
-                          onChanged: ((value) async {
-                            SharedPreferences _preferences =
-                                await SharedPreferences.getInstance();
-                            if (value == _data[0].toString()) {
-                              _stopwatch.stop();
-                              setState(() {
-                                timeTaken = _stopwatch.elapsed.toString();
-                              });
-                              final response = await http.post(
-                                Uri.parse(
-                                    'https://api.halftiicket.com/addPlayerContest/${widget.id}'),
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                  'x-api-key':
-                                      _preferences.getString('_id').toString(),
-                                },
-                                body: jsonEncode({
-                                  'contest_id': widget.id.toString(),
-                                  'time': _stopwatch.elapsed.inSeconds,
-                                }),
-                              );
-                            }
-                          }),
-                          onSubmitted: (s) async {
-                            SharedPreferences _preferences =
-                                await SharedPreferences.getInstance();
-                            if (s == _data[0].toString()) {
-                              _stopwatch.stop();
-                              setState(() {
-                                timeTaken = _stopwatch.elapsed.toString();
-                              });
-                              print(_preferences.getString('_id'));
-                              final response = await http.post(
-                                Uri.parse(
-                                    'api.halftiicket.com/addPlayerContest/${widget.id}'),
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                  'x-api-key':
-                                      _preferences.getString('_id').toString(),
-                                },
-                                body: jsonEncode({
-                                  'contest_id': widget.id.toString(),
-                                  'time': _stopwatch.elapsed.inSeconds,
-                                }),
-                              );
-                            }
-                          },
-                        ),
-                      ),
-                      Text('Time taken:- ' +
-                          (timeTaken == '0:0:0'
-                              ? 'Not Started Yet'
-                              : timeTaken)),
+                      // Text(_data[0].toString()),
+                      // Text(_stopwatch.elapsed.toString()),
+                      // SizedBox(
+                      //   width: 300,
+                      //   height: 30,
+                      //   child: TextField(
+                      //     onTap: () {
+                      //       _stopwatch.start();
+                      //     },
+                      //     onChanged: ((value) async {
+                      //       SharedPreferences _preferences =
+                      //           await SharedPreferences.getInstance();
+                      //       if (value == _data[0].toString()) {
+                      //         _stopwatch.stop();
+                      //         setState(() {
+                      //           timeTaken = _stopwatch.elapsed.toString();
+                      //         });
+                      //         final response = await http.post(
+                      //           Uri.parse(
+                      //               'https://api.halftiicket.com/addPlayerContest/${widget.id}'),
+                      //           headers: {
+                      //             'Content-Type': 'application/json',
+                      //             'x-api-key':
+                      //                 _preferences.getString('_id').toString(),
+                      //           },
+                      //           body: jsonEncode({
+                      //             'contest_id': widget.id.toString(),
+                      //             'time': _stopwatch.elapsed.inSeconds,
+                      //           }),
+                      //         );
+                      //       }
+                      //     }),
+                      //     onSubmitted: (s) async {
+                      //       SharedPreferences _preferences =
+                      //           await SharedPreferences.getInstance();
+                      //       if (s == _data[0].toString()) {
+                      //         _stopwatch.stop();
+                      //         setState(() {
+                      //           timeTaken = _stopwatch.elapsed.toString();
+                      //         });
+                      //         print(_preferences.getString('_id'));
+                      //         final response = await http.post(
+                      //           Uri.parse(
+                      //               'api.halftiicket.com/addPlayerContest/${widget.id}'),
+                      //           headers: {
+                      //             'Content-Type': 'application/json',
+                      //             'x-api-key':
+                      //                 _preferences.getString('_id').toString(),
+                      //           },
+                      //           body: jsonEncode({
+                      //             'contest_id': widget.id.toString(),
+                      //             'time': _stopwatch.elapsed.inSeconds,
+                      //           }),
+                      //         );
+                      //       }
+                      //     },
+                      //   ),
+                      // ),
+                      // Text('Time taken:- ' +
+                      //     (timeTaken == '0:0:0'
+                      //         ? 'Not Started Yet'
+                      //         : timeTaken)),
                     ],
                   ),
                   Positioned(
@@ -253,38 +245,30 @@ class _TypingSpeedState extends State<TypingSpeed> {
                           SizedBox(
                             height: responsiveHeight(51, context),
                           ),
-                          Visibility(
-                            visible: click,
-                            child: DottedBorder(
-                              radius: Radius.circular(7),
-                              borderType: BorderType.RRect,
-                              strokeWidth: 1,
-                              dashPattern: [4, 4],
-                              color: Color(0xFFFFC127),
-                              child: Container(
-                                width: responsiveWidth(283, context),
-                                height: responsiveHeight(68, context),
-                                child: Center(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      for (Map character in word)
-                                        AutoSizeText(
-                                          character.values
-                                              .toList()[0]
-                                              .toString(),
-                                          style: GoogleFonts.outfit(
-                                            textStyle: TextStyle(
-                                              color: correct[
-                                                  character.keys.toList()[0]],
-                                              fontSize:
-                                                  responsiveText(30, context),
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
+                          DottedBorder(
+                            radius: Radius.circular(7),
+                            borderType: BorderType.RRect,
+                            strokeWidth: 1,
+                            dashPattern: [4, 4],
+                            color: Color(0xFFFFC127),
+                            child: Container(
+                              width: responsiveWidth(283, context),
+                              height: responsiveHeight(68, context),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    AutoSizeText(
+                                      _data['word'],
+                                      style: GoogleFonts.outfit(
+                                        textStyle: TextStyle(
+                                          color: Color(0xFFFBC63C),
+                                          fontSize: responsiveText(30, context),
+                                          fontWeight: FontWeight.w500,
                                         ),
-                                    ],
-                                  ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -294,14 +278,22 @@ class _TypingSpeedState extends State<TypingSpeed> {
                             height: responsiveHeight(51, context),
                             child: TextField(
                               controller: _controller,
+                              textAlign: TextAlign.center,
                               decoration: InputDecoration(
                                 hintText: 'Type Here',
                                 hintStyle: GoogleFonts.outfit(
                                   textStyle: TextStyle(
                                     color: Color(0xFFFBC63C),
-                                    fontSize: responsiveText(30, context),
+                                    fontSize: responsiveText(15, context),
                                     fontWeight: FontWeight.w500,
                                   ),
+                                ),
+                              ),
+                              style: GoogleFonts.outfit(
+                                textStyle: TextStyle(
+                                  color: Color(0xFFFBC63C),
+                                  fontSize: responsiveText(30, context),
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                               onSubmitted: (s) async {
@@ -318,44 +310,28 @@ class _TypingSpeedState extends State<TypingSpeed> {
                                         'api.halftiicket.com/addPlayerContest/${widget.id}'),
                                     headers: {
                                       'Content-Type': 'application/json',
-                                      'x-api-key': _preferences
-                                          .getString('_id')
-                                          .toString(),
                                     },
                                     body: jsonEncode({
-                                      'contest_id': widget.id.toString(),
+                                      'user_id': _preferences
+                                          .getString('_id')
+                                          .toString(),
+                                      'contest_id': '639cdb1675f95e42b54ff972',
                                       'time': _stopwatch.elapsed.inSeconds,
                                     }),
                                   );
                                 }
                                 print(correct);
                               },
+                              onTap: () {
+                                _stopwatch.start();
+                              },
                               onChanged: (s) async {
-                                setState(() {
-                                  userWord = [];
-                                });
-                                _controller.text.split('').forEach((ch) {
-                                  setState(() {
-                                    userWord
-                                        .add({_controller.text.length - 1: ch});
-                                  });
-                                });
-                                // userWord.removeAt(0);
-                                print(userWord[userWord.length - 1]);
-                                if (word[userWord.length - 1] ==
-                                    userWord[userWord.length - 1]) {
-                                  setState(() {
-                                    correct[userWord.length - 1] =
-                                        Color(0xFF903838);
-                                  });
-                                } else {
-                                  setState(() {
-                                    correct[userWord.length - 1] = Colors.red;
-                                  });
-                                }
                                 SharedPreferences _preferences =
                                     await SharedPreferences.getInstance();
-                                if (s == _data) {
+                                if (s == _data['word']) {
+                                  print(
+                                    _preferences.getString('_id').toString(),
+                                  );
                                   _stopwatch.stop();
                                   setState(() {
                                     timeTaken = _stopwatch.elapsed.toString();
@@ -363,7 +339,7 @@ class _TypingSpeedState extends State<TypingSpeed> {
                                   await http
                                       .post(
                                         Uri.parse(
-                                            'https://api.halftiicket.com/addPlayerContest/${widget.id}'),
+                                            'https://api.halftiicket.com/addPlayerContest'),
                                         headers: {
                                           'Content-Type': 'application/json',
                                         },
@@ -371,17 +347,26 @@ class _TypingSpeedState extends State<TypingSpeed> {
                                           'user_id': _preferences
                                               .getString('_id')
                                               .toString(),
-                                          'contest_id': widget.id.toString(),
+                                          'contest_id':
+                                              '639cdb1675f95e42b54ff972',
                                           'time': _stopwatch.elapsed.inSeconds,
                                         }),
                                       )
-                                      .then((value) => Navigator.push(
+                                      .then(
+                                        (value) => Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => ScorePage(
-                                                  timeElapsed:
-                                                      _stopwatch.elapsed,
-                                                  id: widget.id))));
+                                            builder: (context) => ScorePage(
+                                              timeElapsed: _stopwatch.elapsed,
+                                              id: '639cdb1675f95e42b54ff972',
+                                              rank: int.parse(
+                                                jsonDecode(value.body)['rank']
+                                                    .toString(),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
                                 }
                                 print(correct);
                               },

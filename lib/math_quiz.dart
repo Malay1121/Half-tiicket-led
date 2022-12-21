@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -5,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:leaderboard/responsive.dart';
 import 'package:leaderboard/score.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MathQuiz extends StatefulWidget {
   MathQuiz({super.key});
@@ -16,7 +19,7 @@ class MathQuiz extends StatefulWidget {
 var num1;
 var num2;
 
-int part = 1;
+int part = 0;
 int score = 0;
 
 List answers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -100,9 +103,11 @@ class _MathQuizState extends State<MathQuiz> {
                           SizedBox(
                             height: responsiveHeight(45, context),
                           ),
-                          SizedBox(
-                            width: responsiveWidth(342, context),
-                            height: responsiveHeight(375, context),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: responsiveWidth(24, context),
+                              right: responsiveWidth(24, context),
+                            ),
                             child: GridView(
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
@@ -116,7 +121,9 @@ class _MathQuizState extends State<MathQuiz> {
                               children: [
                                 for (var answer in answers)
                                   GestureDetector(
-                                    onTap: () {
+                                    onTap: () async {
+                                      SharedPreferences _preferences =
+                                          await SharedPreferences.getInstance();
                                       setState(() {
                                         if (answer == num1 + num2) {
                                           score++;
@@ -127,71 +134,81 @@ class _MathQuizState extends State<MathQuiz> {
                                         _generateQuiz();
                                       } else {
                                         _stopwatch.stop();
-                                        if (score == 3) {
-                                          Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ScorePage(
-                                                        timeElapsed:
-                                                            _stopwatch.elapsed,
-                                                        id: '639fe06f6deeaf05475f1775',
-                                                        maths: true,
-                                                        score: score,
-                                                      )));
+                                        if (part == 3) {
+                                          await http
+                                              .post(
+                                                Uri.parse(
+                                                    'https://api.halftiicket.com/addPlayerContest'),
+                                                headers: {
+                                                  'Content-Type':
+                                                      'application/json',
+                                                },
+                                                body: jsonEncode({
+                                                  'user_id': _preferences
+                                                      .getString('_id')
+                                                      .toString(),
+                                                  'contest_id':
+                                                      '639fe06f6deeaf05475f1775',
+                                                  'time': _stopwatch
+                                                      .elapsed.inSeconds,
+                                                }),
+                                              )
+                                              .then(
+                                                  (value) =>
+                                                      Navigator.pushReplacement(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      ScorePage(
+                                                                        timeElapsed:
+                                                                            _stopwatch.elapsed,
+                                                                        id: '639fe06f6deeaf05475f1775',
+                                                                        maths:
+                                                                            true,
+                                                                        score:
+                                                                            score,
+                                                                        rank: int
+                                                                            .parse(
+                                                                          jsonDecode(value.body)['rank']
+                                                                              .toString(),
+                                                                        ),
+                                                                      ))));
                                         }
                                       }
                                     },
                                     child: Container(
                                       width: responsiveWidth(90, context),
-                                      height: responsiveHeight(98, context),
+                                      height: responsiveHeight(90, context),
                                       decoration: BoxDecoration(
-                                        color: Color(0xFFFFEB8F),
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Color(0xFFFFD07B),
+                                            Color(0xFFF7A001)
+                                          ],
+                                        ),
                                         borderRadius:
                                             BorderRadius.circular(100),
                                       ),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            width: responsiveWidth(90, context),
-                                            height:
-                                                responsiveHeight(90, context),
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  Color(0xFFFFD07B),
-                                                  Color(0xFFF7A001)
-                                                ],
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Center(
-                                              child: SizedBox(
-                                                width: responsiveWidth(
-                                                    44, context),
-                                                height: responsiveHeight(
-                                                    48, context),
-                                                child: Center(
-                                                  child: AutoSizeText(
-                                                    answer.toString(),
-                                                    maxLines: 1,
-                                                    style: GoogleFonts.outfit(
-                                                      textStyle: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize:
-                                                            responsiveText(
-                                                                38, context),
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                  ),
+                                      child: Center(
+                                        child: SizedBox(
+                                          width: responsiveWidth(44, context),
+                                          height: responsiveHeight(48, context),
+                                          child: Center(
+                                            child: AutoSizeText(
+                                              answer.toString(),
+                                              maxLines: 1,
+                                              style: GoogleFonts.outfit(
+                                                textStyle: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: responsiveText(
+                                                      38, context),
+                                                  fontWeight: FontWeight.w600,
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ),

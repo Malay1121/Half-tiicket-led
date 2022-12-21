@@ -5,8 +5,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:leaderboard/constant.dart';
 import 'package:http/http.dart' as http;
-import 'package:leaderboard/contests.dart';
 import 'package:leaderboard/home_page.dart';
+import 'package:leaderboard/leaderboard.dart';
 import 'package:leaderboard/login.dart';
 import 'package:leaderboard/math_quiz.dart';
 import 'package:leaderboard/offers_page.dart';
@@ -49,14 +49,22 @@ class MyApp extends StatelessWidget {
         '/voting': (context) => PublicVoting(),
         '/login': (context) => LoginScreen(),
         '/spin-the-wheel': (context) => SpinTheWheel(),
+        '/leaderboard/639fe06f6deeaf05475f1775': (context) => LeaderBoard(
+              id: '639fe06f6deeaf05475f1775',
+            ),
         '/639fe06f6deeaf05475f1775': (context) => MathQuiz(),
         '/register': (context) => RegisterationScreen(),
         '/offers': (context) => OffersPage(),
-        '/contests': (context) => ContestsScreen(),
         '/639cda5575f95e42b54ff971': (context) => SlidePuzzle(
-              // id: '639cdb1675f95e42b54ff971',
+            // id: '639cdb1675f95e42b54ff971',
+            ),
+        '/leaderboard/639cda5575f95e42b54ff971': (context) => LeaderBoard(
+              id: '639cda5575f95e42b54ff971',
             ),
         '/639cdb1675f95e42b54ff972': (context) => TypingSpeed(
+              id: '639cdb1675f95e42b54ff972',
+            ),
+        '/leaderboard/639cdb1675f95e42b54ff972': (context) => LeaderBoard(
               id: '639cdb1675f95e42b54ff972',
             ),
       },

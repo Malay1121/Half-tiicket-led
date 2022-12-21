@@ -15,11 +15,13 @@ class ScorePage extends StatefulWidget {
     required this.id,
     this.maths = false,
     this.score,
+    required this.rank,
   });
   var timeElapsed;
   int? score;
   bool maths;
   String id;
+  int rank;
 
   @override
   State<ScorePage> createState() => _ScorePageState();
@@ -117,21 +119,25 @@ class _ScorePageState extends State<ScorePage> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: responsiveWidth(137, context),
-                          height: responsiveHeight(18, context),
-                          child: Center(
-                            child: AutoSizeText(
-                              'Better Luck Next Time',
-                              style: GoogleFonts.outfit(
-                                textStyle: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: responsiveText(14, context),
+                        widget.maths == true
+                            ? SizedBox(
+                                width: responsiveWidth(137, context),
+                                height: responsiveHeight(18, context),
+                                child: Center(
+                                  child: AutoSizeText(
+                                    widget.score! < 3
+                                        ? 'Better Luck Next Time'
+                                        : '',
+                                    style: GoogleFonts.outfit(
+                                      textStyle: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: responsiveText(14, context),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        ),
+                              )
+                            : SizedBox(),
                         SizedBox(
                           height: responsiveHeight(108, context),
                         ),
@@ -201,7 +207,7 @@ class _ScorePageState extends State<ScorePage> {
                           height: responsiveHeight(50, context),
                           child: Center(
                             child: AutoSizeText(
-                              '99',
+                              widget.rank.toString(),
                               style: GoogleFonts.outfit(
                                 textStyle: TextStyle(
                                   color: Colors.white,
