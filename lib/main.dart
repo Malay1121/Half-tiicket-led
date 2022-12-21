@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/login',
+      initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),
         '/votes': (context) => VotingScreen(),
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         '/offers': (context) => OffersPage(),
         '/contests': (context) => ContestsScreen(),
         '/639cda5575f95e42b54ff971': (context) => SlidePuzzle(
-              id: '639cdb1675f95e42b54ff971',
+              // id: '639cdb1675f95e42b54ff971',
             ),
         '/639cdb1675f95e42b54ff972': (context) => TypingSpeed(
               id: '639cdb1675f95e42b54ff972',

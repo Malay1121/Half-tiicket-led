@@ -329,6 +329,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   'password', data['password']);
                               _preferences.setInt('childAge', data['childAge']);
                               _preferences.setString('name', data['name']);
+                              _preferences.setString('_id', data['_id']);
+
                               _preferences.setBool('admin', data['admin']);
                               _preferences.setString(
                                   'contests', data['contests'].toString());

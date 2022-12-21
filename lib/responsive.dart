@@ -8,7 +8,7 @@ double responsiveHeight(double height, BuildContext context) {
 }
 
 double responsiveWidth(double width, BuildContext context) {
-  var mediaQuery = MediaQuery.of(context).size;
+  var mediaQuery = MediaQuery.of(context).size / 3;
 
   var divide = 390 / width;
   var width1 = mediaQuery.width / divide;
@@ -27,7 +27,7 @@ double responsiveHeightLogin(double height, BuildContext context) {
 }
 
 double responsiveWidthLogin(double width, BuildContext context) {
-  var mediaQuery = MediaQuery.of(context).size;
+  var mediaQuery = MediaQuery.of(context).size / 3;
 
   var divide = 390 / width;
   var width1 = mediaQuery.width / divide;

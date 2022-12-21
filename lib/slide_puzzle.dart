@@ -14,9 +14,9 @@ import 'package:image/image.dart' as image;
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
-import 'package:leaderboard/leaderboard.dart';
 import 'package:leaderboard/main.dart';
 import 'package:leaderboard/responsive.dart';
+import 'package:leaderboard/score.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TextStrokeWidget extends StatefulWidget {
@@ -139,11 +139,8 @@ final _stopwatch = Stopwatch();
 
 // make statefull widget for testing
 class SlidePuzzle extends StatefulWidget {
-  SlidePuzzle({
-    Key? key,
-    required this.id,
-  }) : super(key: key);
-  final String id;
+  SlidePuzzle({Key? key}) : super(key: key);
+
   @override
   _SlidePuzzleState createState() => _SlidePuzzleState();
 }
@@ -156,7 +153,9 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
   @override
   void initState() {
     // TODO: implement initState
-
+    Timer.periodic(Duration(seconds: 1), (s) {
+      setState(() {});
+    });
     // Future.delayed(Duration(minutes: 2), () {
     //   Navigator.push(
     //       context, MaterialPageRoute(builder: (context) => MainScreen()));
@@ -213,9 +212,9 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
                   // if setup decoration,color must put inside
                   // make puzzle widget
                   child: SlidePuzzleWidget(
-                    id: widget.id,
                     key: globalKey,
                     size: constraints.biggest,
+                    id: '639cda5575f95e42b54ff971',
                     // set size puzzle
                     sizePuzzle: 3,
                     imageBckGround: Image(
@@ -243,8 +242,10 @@ class SlidePuzzleWidget extends StatefulWidget {
   // set image use for background
   Image imageBckGround;
   int sizePuzzle;
+  String id;
   SlidePuzzleWidget({
     Key? key,
+    required this.id,
     this.size = const Size(1, 2),
     this.innerPadding = 5,
     this.imageBckGround = const Image(
@@ -252,9 +253,8 @@ class SlidePuzzleWidget extends StatefulWidget {
           'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png'),
     ),
     this.sizePuzzle = 1,
-    required this.id,
   }) : super(key: key);
-  final String id;
+
   @override
   _SlidePuzzleWidgetState createState() => _SlidePuzzleWidgetState();
 }
@@ -657,20 +657,23 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
             slideObjects!.length &&
         finishSwap) {
       _stopwatch.stop();
-      final response = await http.post(
-        Uri.parse('api.halftiicket.com/addPlayerContest/${id}'),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': _preferences.getString('_id').toString(),
-        },
-        body: jsonEncode({
-          'contest_id': id.toString(),
-          'time': _stopwatch.elapsed,
-        }),
-      ).then((value) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => LeaderBoard(id: widget.id)));
-      });
-      print("Success");
+      final response = await http
+          .post(
+            Uri.parse('https://api.halftiicket.com/addUser'),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({
+              'user_id': _preferences.getString('_id').toString(),
+              'contest_id': _preferences.getString('name'),
+              'time': _stopwatch.elapsed,
+            }),
+          )
+          .then((value) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ScorePage(timeElapsed: _stopwatch.elapsed, id: id))));
       setState(() {});
       success = true;
     } else {

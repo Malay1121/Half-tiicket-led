@@ -64,9 +64,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
+        body: Row(
           children: [
             Expanded(
+                child: Container(
+              child: Text('Ad'),
+            )),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 3,
+              height: MediaQuery.of(context).size.height,
               child: ListView(
                 padding: EdgeInsets.only(
                   top: responsiveHeight(48, context),
@@ -537,6 +543,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+            Expanded(child: Text('Ad')),
           ],
         ),
       ),
