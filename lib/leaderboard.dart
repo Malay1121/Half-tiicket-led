@@ -733,16 +733,16 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                                               'contests',
                                                               data['contests']
                                                                   .toString());
-                                                          TextEditingController
-                                                              _nameController =
+
+                                                          _nameController =
                                                               TextEditingController(
                                                                   text: '');
-                                                          TextEditingController
-                                                              _phoneController =
+
+                                                          _phoneController =
                                                               TextEditingController(
                                                                   text: '');
-                                                          TextEditingController
-                                                              _age =
+
+                                                          _age =
                                                               TextEditingController(
                                                                   text: '3');
                                                           Navigator.pushNamed(

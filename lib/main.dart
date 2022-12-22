@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
         '/votes': (context) => VotingScreen(),
         '/voting': (context) => PublicVoting(),
         '/login': (context) => LoginScreen(),
-        '/spin-the-wheel': (context) => SpinTheWheel(),
+        '/spin-the-wheel': (context) => SpinWheelRegister(),
         '/leaderboard/639fe06f6deeaf05475f1775': (context) => LeaderBoard(
               id: '639fe06f6deeaf05475f1775',
             ),
@@ -67,6 +67,7 @@ class MyApp extends StatelessWidget {
         '/leaderboard/639cdb1675f95e42b54ff972': (context) => LeaderBoard(
               id: '639cdb1675f95e42b54ff972',
             ),
+        '/spin-the-wheel-play': (context) => SpinTheWheel()
       },
     );
   }
