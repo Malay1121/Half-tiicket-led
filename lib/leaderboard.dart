@@ -704,119 +704,153 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                                           preferences =
                                                           await SharedPreferences
                                                               .getInstance();
+                                                      if (int.parse(_age.text) >
+                                                              3 &&
+                                                          int.parse(_age.text) <
+                                                              103) {
+                                                        if (_phoneController
+                                                                .text.length ==
+                                                            10) {
+                                                          await http
+                                                              .post(
+                                                            Uri.parse(
+                                                                'https://api.halftiicket.com/addTempUser'),
+                                                            headers: {
+                                                              'Content-Type':
+                                                                  'application/json',
+                                                            },
+                                                            body: jsonEncode({
+                                                              'name':
+                                                                  _nameController
+                                                                      .text,
+                                                              'childAge':
+                                                                  int.parse(_age
+                                                                      .text),
+                                                              'phoneNumber':
+                                                                  int.parse(
+                                                                      _phoneController
+                                                                          .text),
+                                                              "contests": {},
+                                                            }),
+                                                          )
+                                                              .then((value) {
+                                                            setState(() {
+                                                              _loading = false;
+                                                            });
 
-                                                      if (_phoneController
-                                                              .text.length ==
-                                                          10) {
-                                                        await http
-                                                            .post(
-                                                          Uri.parse(
-                                                              'https://api.halftiicket.com/addTempUser'),
-                                                          headers: {
-                                                            'Content-Type':
-                                                                'application/json',
-                                                          },
-                                                          body: jsonEncode({
-                                                            'name':
-                                                                _nameController
-                                                                    .text,
-                                                            'childAge':
-                                                                int.parse(
-                                                                    _age.text),
-                                                            'phoneNumber':
-                                                                int.parse(
-                                                                    _phoneController
-                                                                        .text),
-                                                            "contests": {},
-                                                          }),
-                                                        )
-                                                            .then((value) {
-                                                          setState(() {
-                                                            _loading = false;
-                                                          });
+                                                            var data =
+                                                                jsonDecode(
+                                                                    value.body);
+                                                            print(data);
+                                                            if (data['contests']
+                                                                    .keys
+                                                                    .toList()
+                                                                    .contains(
+                                                                        widget
+                                                                            .id) ==
+                                                                false) {
+                                                              if (data !=
+                                                                      {
+                                                                        "message":
+                                                                            "minimum child age is 3"
+                                                                      } ||
+                                                                  data !=
+                                                                      {
+                                                                        "detail":
+                                                                            [
+                                                                          {
+                                                                            "loc":
+                                                                                [
+                                                                              "body",
+                                                                              "email"
+                                                                            ],
+                                                                            "msg":
+                                                                                "value is not a valid email address",
+                                                                            "type":
+                                                                                "value_error.email"
+                                                                          }
+                                                                        ]
+                                                                      } ||
+                                                                  data !=
+                                                                      "{detail: [{loc: [body], msg: value is not a valid dict, type: type_error.dict}]}") {
+                                                                preferences.setInt(
+                                                                    'phoneNumber',
+                                                                    data[
+                                                                        'phoneNumber']);
+                                                                preferences.setInt(
+                                                                    'childAge',
+                                                                    data[
+                                                                        'childAge']);
+                                                                preferences
+                                                                    .setString(
+                                                                        'name',
+                                                                        data[
+                                                                            'name']);
+                                                                preferences
+                                                                    .setString(
+                                                                        '_id',
+                                                                        data[
+                                                                            '_id']);
 
-                                                          var data = jsonDecode(
-                                                              value.body);
-                                                          print(data);
-                                                          if (data['contests']
-                                                                  .keys
-                                                                  .toList()
-                                                                  .contains(
-                                                                      widget
-                                                                          .id) ==
-                                                              false) {
-                                                            if (data !=
-                                                                    {
-                                                                      "message":
-                                                                          "minimum child age is 3"
-                                                                    } ||
-                                                                data !=
-                                                                    {
-                                                                      "detail":
-                                                                          [
-                                                                        {
-                                                                          "loc":
-                                                                              [
-                                                                            "body",
-                                                                            "email"
-                                                                          ],
-                                                                          "msg":
-                                                                              "value is not a valid email address",
-                                                                          "type":
-                                                                              "value_error.email"
-                                                                        }
-                                                                      ]
-                                                                    } ||
-                                                                data !=
-                                                                    "{detail: [{loc: [body], msg: value is not a valid dict, type: type_error.dict}]}") {
-                                                              preferences.setInt(
-                                                                  'phoneNumber',
-                                                                  data[
-                                                                      'phoneNumber']);
-                                                              preferences.setInt(
-                                                                  'childAge',
-                                                                  data[
-                                                                      'childAge']);
-                                                              preferences
-                                                                  .setString(
-                                                                      'name',
-                                                                      data[
-                                                                          'name']);
-                                                              preferences
-                                                                  .setString(
-                                                                      '_id',
-                                                                      data[
-                                                                          '_id']);
+                                                                preferences.setString(
+                                                                    'contests',
+                                                                    data['contests']
+                                                                        .toString());
 
-                                                              preferences.setString(
-                                                                  'contests',
-                                                                  data['contests']
-                                                                      .toString());
+                                                                _nameController =
+                                                                    TextEditingController(
+                                                                        text:
+                                                                            '');
 
-                                                              _nameController =
-                                                                  TextEditingController(
-                                                                      text: '');
+                                                                _phoneController =
+                                                                    TextEditingController(
+                                                                        text:
+                                                                            '');
 
-                                                              _phoneController =
-                                                                  TextEditingController(
-                                                                      text: '');
-
-                                                              _age =
-                                                                  TextEditingController(
-                                                                      text: '');
-                                                              Navigator.pushNamed(
-                                                                  context,
-                                                                  '/${widget.id}');
+                                                                _age =
+                                                                    TextEditingController(
+                                                                        text:
+                                                                            '');
+                                                                Navigator.pushNamed(
+                                                                    context,
+                                                                    '/${widget.id}');
+                                                              } else {
+                                                                showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        ((context) {
+                                                                      return Column(
+                                                                        children: [
+                                                                          Text(
+                                                                              'Try again'),
+                                                                          GestureDetector(
+                                                                            onTap:
+                                                                                () {
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                            child:
+                                                                                Container(
+                                                                              width: responsiveWidth(200, context),
+                                                                              height: responsiveHeight(50, context),
+                                                                              color: Colors.yellow,
+                                                                              child: Center(child: Text('Close')),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      );
+                                                                    }));
+                                                              }
                                                             } else {
                                                               showDialog(
                                                                   context:
                                                                       context,
                                                                   builder:
-                                                                      ((context) {
+                                                                      (context) {
                                                                     return Column(
                                                                       children: [
                                                                         Text(
-                                                                            'Try again'),
+                                                                            'Already Played This Contest'),
                                                                         GestureDetector(
                                                                           onTap:
                                                                               () {
@@ -836,43 +870,43 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                                                         ),
                                                                       ],
                                                                     );
-                                                                  }));
+                                                                  });
                                                             }
-                                                          } else {
-                                                            showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (context) {
-                                                                  return Column(
-                                                                    children: [
-                                                                      Text(
-                                                                          'Already Played This Contest'),
-                                                                      GestureDetector(
-                                                                        onTap:
-                                                                            () {
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        },
-                                                                        child:
-                                                                            Container(
-                                                                          width: responsiveWidth(
-                                                                              200,
-                                                                              context),
-                                                                          height: responsiveHeight(
-                                                                              50,
-                                                                              context),
-                                                                          color:
-                                                                              Colors.yellow,
-                                                                          child:
-                                                                              Center(child: Text('Close')),
-                                                                        ),
+                                                          });
+                                                        } else {
+                                                          showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (context) {
+                                                                return Column(
+                                                                  children: [
+                                                                    Text(
+                                                                        'Phone Number must be of 10 numbers'),
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        width: responsiveWidth(
+                                                                            200,
+                                                                            context),
+                                                                        height: responsiveHeight(
+                                                                            50,
+                                                                            context),
+                                                                        color: Colors
+                                                                            .yellow,
+                                                                        child: Center(
+                                                                            child:
+                                                                                Text('Close')),
                                                                       ),
-                                                                    ],
-                                                                  );
-                                                                });
-                                                          }
-                                                        });
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              });
+                                                        }
                                                       } else {
                                                         showDialog(
                                                             context: context,
@@ -880,7 +914,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                                               return Column(
                                                                 children: [
                                                                   Text(
-                                                                      'Phone Number must be of 10 numbers'),
+                                                                      'Please Enter An Appropriate Age'),
                                                                   GestureDetector(
                                                                     onTap: () {
                                                                       Navigator.pop(

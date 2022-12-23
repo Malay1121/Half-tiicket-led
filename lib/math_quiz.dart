@@ -132,8 +132,6 @@ class _MathQuizState extends State<MathQuiz> {
                                 for (var answer in answers)
                                   GestureDetector(
                                     onTap: () async {
-                                      var responose;
-
                                       SharedPreferences _preferences =
                                           await SharedPreferences.getInstance();
                                       setState(() {
@@ -147,39 +145,59 @@ class _MathQuizState extends State<MathQuiz> {
                                       } else {
                                         _stopwatch.stop();
                                         if (score == 3) {
-                                          responose = await http.post(
-                                            Uri.parse(
-                                                'https://api.halftiicket.com/addPlayerContest'),
-                                            headers: {
-                                              'Content-Type':
-                                                  'application/json',
-                                            },
-                                            body: jsonEncode({
-                                              'user_id': _preferences
-                                                  .getString('_id')
-                                                  .toString(),
-                                              'contest_id':
-                                                  '639fe06f6deeaf05475f1775',
-                                              'time':
-                                                  _stopwatch.elapsed.inSeconds,
-                                            }),
-                                          );
-                                        }
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
+                                          await http
+                                              .post(
+                                                Uri.parse(
+                                                    'https://api.halftiicket.com/addPlayerContest'),
+                                                headers: {
+                                                  'Content-Type':
+                                                      'application/json',
+                                                },
+                                                body: jsonEncode({
+                                                  'user_id': _preferences
+                                                      .getString('_id')
+                                                      .toString(),
+                                                  'contest_id':
+                                                      '639fe06f6deeaf05475f1775',
+                                                  'time': _stopwatch
+                                                      .elapsed.inSeconds,
+                                                }),
+                                              )
+                                              .then(
+                                                  (value) =>
+                                                      Navigator.pushReplacement(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      ScorePage(
+                                                                        timeElapsed:
+                                                                            _stopwatch.elapsed,
+                                                                        id: '639fe06f6deeaf05475f1775',
+                                                                        maths:
+                                                                            true,
+                                                                        score:
+                                                                            score,
+                                                                        rank: int
+                                                                            .parse(
+                                                                          jsonDecode(value.body)['rank']
+                                                                              .toString(),
+                                                                        ),
+                                                                      ))));
+                                        } else {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
                                                 builder: (context) => ScorePage(
-                                                      timeElapsed:
-                                                          _stopwatch.elapsed,
-                                                      id: '639fe06f6deeaf05475f1775',
-                                                      maths: true,
-                                                      score: score,
-                                                      rank: int.parse(
-                                                        jsonDecode(response
-                                                                .body)['rank']
-                                                            .toString(),
-                                                      ),
-                                                    )));
+                                                  timeElapsed:
+                                                      _stopwatch.elapsed,
+                                                  id: '639fe06f6deeaf05475f1775',
+                                                  maths: true,
+                                                  score: score,
+                                                  rank: 0,
+                                                ),
+                                              ));
+                                        }
                                       }
                                     },
                                     child: Container(
