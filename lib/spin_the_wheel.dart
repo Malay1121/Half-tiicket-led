@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
+import 'package:flutter_spinwheel/flutter_spinwheel.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:leaderboard/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,13 +18,7 @@ class SpinTheWheel extends StatefulWidget {
 }
 
 StreamController<int> controller = StreamController<int>();
-List items = [
-  'Coupon Code 1',
-  'Deal 1',
-  'Discount 1',
-  'Freebies',
-  'Gift Card 1'
-];
+List<String> items = [];
 
 class _SpinTheWheelState extends State<SpinTheWheel> {
   @override
@@ -40,12 +35,37 @@ class _SpinTheWheelState extends State<SpinTheWheel> {
               child: SizedBox(
                 width: responsiveWidth(300, context),
                 height: responsiveWidth(300, context),
-                child: FortuneWheel(
-                  selected: controller.stream,
-                  duration: Duration(seconds: 10),
-                  items: [
-                    for (var item in items) FortuneItem(child: Text(item)),
-                  ],
+                child: Spinwheel(
+                  onChanged: (val) async {
+                    SharedPreferences _preferences =
+                        await SharedPreferences.getInstance();
+                    await http
+                        .post(
+                          Uri.parse(
+                              'https://api.halftiicket.com/addPlayerSpinner'),
+                          headers: {
+                            'Content-Type': 'application/json',
+                          },
+                          body: jsonEncode({
+                            "user_id": _preferences.getString('_id').toString(),
+                            "user_name":
+                                _preferences.getString('name').toString(),
+                            "company_name": val.split(' by ')[0],
+                            "description": val.split(' by ')[1],
+                            "phone_number":
+                                _preferences.getString('phoneNumber'),
+                          }),
+                        )
+                        .then((value) => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PrizeScreen(
+                                      prize: val,
+                                    ))));
+                  },
+                  select: Random().nextInt(items.length),
+                  autoPlay: false,
+                  items: items,
                 ),
               ),
             ),
@@ -168,36 +188,16 @@ class _SpinWheelRegisterState extends State<SpinWheelRegister> {
                     });
                     SharedPreferences preferences =
                         await SharedPreferences.getInstance();
-                    await http
-                        .post(
-                      Uri.parse('https://api.halftiicket.com/addTempUser'),
+                    await http.post(
+                      Uri.parse(
+                          'https://api.halftiicket.com/spinnerEmailChecker/${_emailController.text.replaceAll("@", "%40")}'),
                       headers: {
                         'Content-Type': 'application/json',
                       },
-                      body: jsonEncode({
-                        'email': _emailController.text,
-                      }),
-                    )
-                        .then((value) {
-                      setState(() {
-                        _loading = false;
-                      });
-
+                    ).then((value) async {
                       var data = jsonDecode(value.body);
                       print(data);
-                      if (data != {"message": "minimum child age is 3"} ||
-                          data !=
-                              {
-                                "detail": [
-                                  {
-                                    "loc": ["body", "email"],
-                                    "msg": "value is not a valid email address",
-                                    "type": "value_error.email"
-                                  }
-                                ]
-                              } ||
-                          data !=
-                              "{detail: [{loc: [body], msg: value is not a valid dict, type: type_error.dict}]}") {
+                      if (value.statusCode == 200) {
                         preferences.setInt('phoneNumber', data['phoneNumber']);
                         preferences.setInt('childAge', data['childAge']);
                         preferences.setString('name', data['name']);
@@ -208,12 +208,38 @@ class _SpinWheelRegisterState extends State<SpinWheelRegister> {
                         setState(() {
                           _emailController = TextEditingController(text: '');
                         });
-                        setState(() {
-                          controller.add(
-                            Fortune.randomInt(0, items.length),
-                          );
+
+                        await http.post(
+                          Uri.parse(
+                              'https://api.halftiicket.com/spinnerOffers'),
+                          headers: {
+                            'Content-Type': 'application/json',
+                          },
+                        ).then((value1) {
+                          setState(() {
+                            _loading = false;
+                          });
+
+                          var data1 = jsonDecode(value1.body);
+                          print(data1);
+                          if (value1.statusCode == 200) {
+                            for (var item in data1['offers'])
+                              setState(() {
+                                items = data1['offers']['description'] +
+                                    ' by ' +
+                                    data1['offers']['company_name'];
+                              });
+
+                            Navigator.pushNamed(
+                                context, '/spin-the-wheel-play');
+                          } else {
+                            showDialog(
+                                context: context,
+                                builder: ((context) {
+                                  return Text('Try again');
+                                }));
+                          }
                         });
-                        Navigator.pushNamed(context, '/spin-the-wheel-play');
                       } else {
                         showDialog(
                             context: context,
@@ -265,6 +291,162 @@ class _SpinWheelRegisterState extends State<SpinWheelRegister> {
             ),
           ),
           Expanded(child: Text('ad')),
+        ],
+      ),
+    );
+  }
+}
+
+class PrizeScreen extends StatefulWidget {
+  PrizeScreen({super.key, required this.prize});
+  String prize;
+  @override
+  State<PrizeScreen> createState() => _PrizeScreenState();
+}
+
+class _PrizeScreenState extends State<PrizeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Row(
+        children: [
+          Expanded(child: Text('Ad')),
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 3,
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width / 3,
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage('assets/typingback.png'),
+                    ),
+                  ),
+                ),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: responsiveHeight(171, context),
+                    ),
+                    SizedBox(
+                      width: responsiveWidth(303, context),
+                      height: responsiveHeight(38, context),
+                      child: Center(
+                        child: AutoSizeText(
+                          widget.prize.toString(),
+                          style: GoogleFonts.outfit(
+                            textStyle: TextStyle(
+                              color: Color(0xFF903838),
+                              fontSize: responsiveText(30, context),
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Positioned(
+                  top: responsiveHeight(171, context),
+                  child: Container(
+                    width: responsiveWidth(342, context),
+                    height: responsiveHeight(217, context),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(23),
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: responsiveWidth(169, context),
+                          height: responsiveHeight(41, context),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xFFFFC329),
+                                Color(0xFFF58B01),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Center(
+                            child: SizedBox(
+                              height: responsiveHeight(31, context),
+                              width: responsiveWidth(125, context),
+                              child: Center(
+                                child: Text(
+                                  widget.prize != 'Better Luck Next Time'
+                                      ? 'You Won!'
+                                      : 'You Lost!',
+                                  style: GoogleFonts.outfit(
+                                    textStyle: TextStyle(
+                                      color: Color(0xFF212121),
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: responsiveText(14, context),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: responsiveHeight(108, context),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SpinWheelRegister()));
+                          },
+                          child: Container(
+                            width: responsiveWidth(156, context),
+                            height: responsiveHeight(38, context),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(0xFFFFB2B2),
+                                  Color(0xFFFBC63C),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
+                            child: Center(
+                              child: SizedBox(
+                                height: responsiveHeight(18, context),
+                                width: responsiveWidth(120, context),
+                                child: Center(
+                                  child: Text(
+                                    'Spin Again!',
+                                    style: GoogleFonts.outfit(
+                                      textStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: responsiveText(14, context),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(child: Text('Ad')),
         ],
       ),
     );

@@ -47,7 +47,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   modal_progress_hud_nsn: ^0.3.0
   modal_bottom_sheet: ^2.1.2
-  flutter_fortune_wheel: ^1.2.0
+  flutter_spinwheel: ^0.1.0
 
 dev_dependencies:
   flutter_test:

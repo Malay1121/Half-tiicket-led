@@ -31,6 +31,10 @@ class _MathQuizState extends State<MathQuiz> {
     // TODO: implement initState
     _generateQuiz();
     _stopwatch.start();
+    setState(() {
+      part = 0;
+      score = 0;
+    });
   }
 
   @override
@@ -137,43 +141,42 @@ class _MathQuizState extends State<MathQuiz> {
                                         if (part == 3) {
                                           await http
                                               .post(
-                                                Uri.parse(
-                                                    'https://api.halftiicket.com/addPlayerContest'),
-                                                headers: {
-                                                  'Content-Type':
-                                                      'application/json',
-                                                },
-                                                body: jsonEncode({
-                                                  'user_id': _preferences
-                                                      .getString('_id')
-                                                      .toString(),
-                                                  'contest_id':
-                                                      '639fe06f6deeaf05475f1775',
-                                                  'time': _stopwatch
-                                                      .elapsed.inSeconds,
-                                                }),
-                                              )
-                                              .then(
-                                                  (value) =>
-                                                      Navigator.pushReplacement(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder:
-                                                                  (context) =>
-                                                                      ScorePage(
-                                                                        timeElapsed:
-                                                                            _stopwatch.elapsed,
-                                                                        id: '639fe06f6deeaf05475f1775',
-                                                                        maths:
-                                                                            true,
-                                                                        score:
-                                                                            score,
-                                                                        rank: int
-                                                                            .parse(
-                                                                          jsonDecode(value.body)['rank']
-                                                                              .toString(),
-                                                                        ),
-                                                                      ))));
+                                            Uri.parse(
+                                                'https://api.halftiicket.com/addPlayerContest'),
+                                            headers: {
+                                              'Content-Type':
+                                                  'application/json',
+                                            },
+                                            body: jsonEncode({
+                                              'user_id': _preferences
+                                                  .getString('_id')
+                                                  .toString(),
+                                              'contest_id':
+                                                  '639fe06f6deeaf05475f1775',
+                                              'time':
+                                                  _stopwatch.elapsed.inSeconds,
+                                            }),
+                                          )
+                                              .then((value) {
+                                            Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ScorePage(
+                                                          timeElapsed:
+                                                              _stopwatch
+                                                                  .elapsed,
+                                                          id: '639fe06f6deeaf05475f1775',
+                                                          maths: true,
+                                                          score: score,
+                                                          rank: int.parse(
+                                                            jsonDecode(value
+                                                                        .body)[
+                                                                    'rank']
+                                                                .toString(),
+                                                          ),
+                                                        )));
+                                          });
                                         }
                                       }
                                     },
