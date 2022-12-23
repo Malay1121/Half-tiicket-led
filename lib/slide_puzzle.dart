@@ -14,6 +14,7 @@ import 'package:image/image.dart' as image;
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
+import 'package:leaderboard/constant.dart';
 import 'package:leaderboard/main.dart';
 import 'package:leaderboard/responsive.dart';
 import 'package:leaderboard/score.dart';
@@ -191,7 +192,12 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
       extendBodyBehindAppBar: true,
       body: Row(
         children: [
-          Expanded(child: Text('ad')),
+          Expanded(
+            child: Image.network(
+              imageSponsor,
+              fit: BoxFit.fill,
+            ),
+          ),
           Container(
             width: MediaQuery.of(context).size.width / 3,
             height: MediaQuery.of(context).size.height,
@@ -238,7 +244,12 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
               ),
             ),
           ),
-          Expanded(child: Text('ad')),
+          Expanded(
+            child: Image.network(
+              imageSponsor,
+              fit: BoxFit.fill,
+            ),
+          ),
         ],
       ),
     );

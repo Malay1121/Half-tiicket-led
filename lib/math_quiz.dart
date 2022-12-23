@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:leaderboard/constant.dart';
 import 'package:leaderboard/responsive.dart';
 import 'package:leaderboard/score.dart';
 import 'package:http/http.dart' as http;
@@ -43,7 +44,12 @@ class _MathQuizState extends State<MathQuiz> {
       child: Scaffold(
         body: Row(
           children: [
-            Expanded(child: Text('Ad')),
+            Expanded(
+              child: Image.network(
+                imageSponsor,
+                fit: BoxFit.fill,
+              ),
+            ),
             SizedBox(
               width: MediaQuery.of(context).size.width / 3,
               height: MediaQuery.of(context).size.height,
@@ -126,6 +132,8 @@ class _MathQuizState extends State<MathQuiz> {
                                 for (var answer in answers)
                                   GestureDetector(
                                     onTap: () async {
+                                      var responose;
+
                                       SharedPreferences _preferences =
                                           await SharedPreferences.getInstance();
                                       setState(() {
@@ -138,9 +146,8 @@ class _MathQuizState extends State<MathQuiz> {
                                         _generateQuiz();
                                       } else {
                                         _stopwatch.stop();
-                                        if (part == 3) {
-                                          await http
-                                              .post(
+                                        if (score == 3) {
+                                          responose = await http.post(
                                             Uri.parse(
                                                 'https://api.halftiicket.com/addPlayerContest'),
                                             headers: {
@@ -156,28 +163,23 @@ class _MathQuizState extends State<MathQuiz> {
                                               'time':
                                                   _stopwatch.elapsed.inSeconds,
                                             }),
-                                          )
-                                              .then((value) {
-                                            Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ScorePage(
-                                                          timeElapsed:
-                                                              _stopwatch
-                                                                  .elapsed,
-                                                          id: '639fe06f6deeaf05475f1775',
-                                                          maths: true,
-                                                          score: score,
-                                                          rank: int.parse(
-                                                            jsonDecode(value
-                                                                        .body)[
-                                                                    'rank']
-                                                                .toString(),
-                                                          ),
-                                                        )));
-                                          });
+                                          );
                                         }
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => ScorePage(
+                                                      timeElapsed:
+                                                          _stopwatch.elapsed,
+                                                      id: '639fe06f6deeaf05475f1775',
+                                                      maths: true,
+                                                      score: score,
+                                                      rank: int.parse(
+                                                        jsonDecode(response
+                                                                .body)['rank']
+                                                            .toString(),
+                                                      ),
+                                                    )));
                                       }
                                     },
                                     child: Container(
@@ -225,7 +227,12 @@ class _MathQuizState extends State<MathQuiz> {
                 ),
               ),
             ),
-            Expanded(child: Text('Ad')),
+            Expanded(
+              child: Image.network(
+                imageSponsor,
+                fit: BoxFit.fill,
+              ),
+            ),
           ],
         ),
       ),

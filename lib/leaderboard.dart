@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:leaderboard/constant.dart';
 import 'package:leaderboard/responsive.dart';
 import 'package:leaderboard/slide_puzzle.dart';
 import 'package:leaderboard/typing_speed.dart';
@@ -83,6 +84,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
         setState(() {
           _loading = false;
           _data = jsonDecode(response.body) as Map;
+          imageSponsor = _data['contest']['img'];
         });
       });
       channel = WebSocketChannel.connect(
@@ -118,7 +120,12 @@ class _LeaderBoardState extends State<LeaderBoard> {
       child: Scaffold(
         body: Row(
           children: [
-            Expanded(child: Text('Ad')),
+            Expanded(
+              child: Image.network(
+                imageSponsor,
+                fit: BoxFit.fill,
+              ),
+            ),
             SizedBox(
               width: MediaQuery.of(context).size.width / 3,
               height: MediaQuery.of(context).size.height,
@@ -341,7 +348,9 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                   builder: (context) => Scaffold(
                                         body: Row(
                                           children: [
-                                            Expanded(child: Text('ad')),
+                                            Expanded(
+                                                child: Image.network(
+                                                    imageSponsor)),
                                             SizedBox(
                                               width:
                                                   responsiveWidth(390, context),
@@ -499,6 +508,10 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                                             keyboardType:
                                                                 TextInputType
                                                                     .number,
+                                                            inputFormatters: [
+                                                              FilteringTextInputFormatter
+                                                                  .digitsOnly,
+                                                            ],
                                                             decoration:
                                                                 InputDecoration(
                                                               contentPadding:
@@ -576,6 +589,8 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                                             inputFormatters: [
                                                               LengthLimitingTextInputFormatter(
                                                                   10),
+                                                              FilteringTextInputFormatter
+                                                                  .digitsOnly,
                                                             ],
                                                             keyboardType:
                                                                 TextInputType
@@ -684,10 +699,12 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                                       setState(() {
                                                         _loading = true;
                                                       });
+
                                                       SharedPreferences
                                                           preferences =
                                                           await SharedPreferences
                                                               .getInstance();
+
                                                       if (_phoneController
                                                               .text.length ==
                                                           10) {
@@ -721,76 +738,116 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                                           var data = jsonDecode(
                                                               value.body);
                                                           print(data);
-                                                          if (data !=
-                                                                  {
-                                                                    "message":
-                                                                        "minimum child age is 3"
-                                                                  } ||
-                                                              data !=
-                                                                  {
-                                                                    "detail": [
-                                                                      {
-                                                                        "loc": [
-                                                                          "body",
-                                                                          "email"
-                                                                        ],
-                                                                        "msg":
-                                                                            "value is not a valid email address",
-                                                                        "type":
-                                                                            "value_error.email"
-                                                                      }
-                                                                    ]
-                                                                  } ||
-                                                              data !=
-                                                                  "{detail: [{loc: [body], msg: value is not a valid dict, type: type_error.dict}]}") {
-                                                            preferences.setInt(
-                                                                'phoneNumber',
-                                                                data[
-                                                                    'phoneNumber']);
-                                                            preferences.setInt(
-                                                                'childAge',
-                                                                data[
-                                                                    'childAge']);
-                                                            preferences
-                                                                .setString(
-                                                                    'name',
-                                                                    data[
-                                                                        'name']);
-                                                            preferences
-                                                                .setString(
-                                                                    '_id',
-                                                                    data[
-                                                                        '_id']);
+                                                          if (data['contests']
+                                                                  .keys
+                                                                  .toList()
+                                                                  .contains(
+                                                                      widget
+                                                                          .id) ==
+                                                              false) {
+                                                            if (data !=
+                                                                    {
+                                                                      "message":
+                                                                          "minimum child age is 3"
+                                                                    } ||
+                                                                data !=
+                                                                    {
+                                                                      "detail":
+                                                                          [
+                                                                        {
+                                                                          "loc":
+                                                                              [
+                                                                            "body",
+                                                                            "email"
+                                                                          ],
+                                                                          "msg":
+                                                                              "value is not a valid email address",
+                                                                          "type":
+                                                                              "value_error.email"
+                                                                        }
+                                                                      ]
+                                                                    } ||
+                                                                data !=
+                                                                    "{detail: [{loc: [body], msg: value is not a valid dict, type: type_error.dict}]}") {
+                                                              preferences.setInt(
+                                                                  'phoneNumber',
+                                                                  data[
+                                                                      'phoneNumber']);
+                                                              preferences.setInt(
+                                                                  'childAge',
+                                                                  data[
+                                                                      'childAge']);
+                                                              preferences
+                                                                  .setString(
+                                                                      'name',
+                                                                      data[
+                                                                          'name']);
+                                                              preferences
+                                                                  .setString(
+                                                                      '_id',
+                                                                      data[
+                                                                          '_id']);
 
-                                                            preferences.setString(
-                                                                'contests',
-                                                                data['contests']
-                                                                    .toString());
+                                                              preferences.setString(
+                                                                  'contests',
+                                                                  data['contests']
+                                                                      .toString());
 
-                                                            _nameController =
-                                                                TextEditingController(
-                                                                    text: '');
+                                                              _nameController =
+                                                                  TextEditingController(
+                                                                      text: '');
 
-                                                            _phoneController =
-                                                                TextEditingController(
-                                                                    text: '');
+                                                              _phoneController =
+                                                                  TextEditingController(
+                                                                      text: '');
 
-                                                            _age =
-                                                                TextEditingController(
-                                                                    text: '');
-                                                            Navigator.pushNamed(
-                                                                context,
-                                                                '/${widget.id}');
+                                                              _age =
+                                                                  TextEditingController(
+                                                                      text: '');
+                                                              Navigator.pushNamed(
+                                                                  context,
+                                                                  '/${widget.id}');
+                                                            } else {
+                                                              showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      ((context) {
+                                                                    return Column(
+                                                                      children: [
+                                                                        Text(
+                                                                            'Try again'),
+                                                                        GestureDetector(
+                                                                          onTap:
+                                                                              () {
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          child:
+                                                                              Container(
+                                                                            width:
+                                                                                responsiveWidth(200, context),
+                                                                            height:
+                                                                                responsiveHeight(50, context),
+                                                                            color:
+                                                                                Colors.yellow,
+                                                                            child:
+                                                                                Center(child: Text('Close')),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    );
+                                                                  }));
+                                                            }
                                                           } else {
                                                             showDialog(
                                                                 context:
                                                                     context,
                                                                 builder:
-                                                                    ((context) {
+                                                                    (context) {
                                                                   return Column(
                                                                     children: [
                                                                       Text(
-                                                                          'Try again'),
+                                                                          'Already Played This Contest'),
                                                                       GestureDetector(
                                                                         onTap:
                                                                             () {
@@ -813,7 +870,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                                                       ),
                                                                     ],
                                                                   );
-                                                                }));
+                                                                });
                                                           }
                                                         });
                                                       } else {
@@ -909,7 +966,9 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                                 ],
                                               ),
                                             ),
-                                            Expanded(child: Text('ad')),
+                                            Expanded(
+                                                child: Image.network(
+                                                    imageSponsor)),
                                           ],
                                         ),
                                       )));
@@ -960,7 +1019,12 @@ class _LeaderBoardState extends State<LeaderBoard> {
                 ],
               ),
             ),
-            Expanded(child: Text('AD')),
+            Expanded(
+              child: Image.network(
+                imageSponsor,
+                fit: BoxFit.fill,
+              ),
+            ),
           ],
         ),
       ),

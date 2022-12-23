@@ -7,6 +7,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:leaderboard/constant.dart';
 import 'package:leaderboard/responsive.dart';
 import 'package:leaderboard/score.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -110,7 +111,12 @@ class _TypingSpeedState extends State<TypingSpeed> {
       child: Scaffold(
         body: Row(
           children: [
-            Expanded(child: Text('Ad')),
+            Expanded(
+              child: Image.network(
+                imageSponsor,
+                fit: BoxFit.fill,
+              ),
+            ),
             SizedBox(
               width: MediaQuery.of(context).size.width / 3,
               height: MediaQuery.of(context).size.height,
@@ -379,7 +385,12 @@ class _TypingSpeedState extends State<TypingSpeed> {
                 ],
               ),
             ),
-            Expanded(child: Text('Ad')),
+            Expanded(
+              child: Image.network(
+                imageSponsor,
+                fit: BoxFit.fill,
+              ),
+            ),
           ],
         ),
       ),

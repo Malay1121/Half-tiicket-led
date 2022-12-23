@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:leaderboard/constant.dart';
 import 'package:leaderboard/leaderboard.dart';
 import 'package:leaderboard/responsive.dart';
 import 'package:http/http.dart' as http;
@@ -543,7 +544,12 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            Expanded(child: Text('Ad')),
+            Expanded(
+              child: Image.network(
+                imageSponsor,
+                fit: BoxFit.fill,
+              ),
+            ),
           ],
         ),
       ),

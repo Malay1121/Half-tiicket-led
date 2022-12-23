@@ -6,6 +6,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinwheel/flutter_spinwheel.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:leaderboard/constant.dart';
 import 'package:leaderboard/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -26,7 +27,12 @@ class _SpinTheWheelState extends State<SpinTheWheel> {
     return Scaffold(
       body: Row(
         children: [
-          Expanded(child: Text('ad')),
+          Expanded(
+            child: Image.network(
+              imageSponsor,
+              fit: BoxFit.fill,
+            ),
+          ),
           SizedBox(
             width: MediaQuery.of(context).size.width / 3,
             height: MediaQuery.of(context).size.height,
@@ -70,7 +76,12 @@ class _SpinTheWheelState extends State<SpinTheWheel> {
               ),
             ),
           ),
-          Expanded(child: Text('ad')),
+          Expanded(
+            child: Image.network(
+              imageSponsor,
+              fit: BoxFit.fill,
+            ),
+          ),
         ],
       ),
     );
@@ -92,7 +103,12 @@ class _SpinWheelRegisterState extends State<SpinWheelRegister> {
     return Scaffold(
       body: Row(
         children: [
-          Expanded(child: Text('ad')),
+          Expanded(
+            child: Image.network(
+              imageSponsor,
+              fit: BoxFit.fill,
+            ),
+          ),
           SizedBox(
             width: responsiveWidth(390, context),
             child: Column(
@@ -290,7 +306,12 @@ class _SpinWheelRegisterState extends State<SpinWheelRegister> {
               ],
             ),
           ),
-          Expanded(child: Text('ad')),
+          Expanded(
+            child: Image.network(
+              imageSponsor,
+              fit: BoxFit.fill,
+            ),
+          ),
         ],
       ),
     );
@@ -310,7 +331,12 @@ class _PrizeScreenState extends State<PrizeScreen> {
     return Scaffold(
       body: Row(
         children: [
-          Expanded(child: Text('Ad')),
+          Expanded(
+            child: Image.network(
+              imageSponsor,
+              fit: BoxFit.fill,
+            ),
+          ),
           SizedBox(
             width: MediaQuery.of(context).size.width / 3,
             height: MediaQuery.of(context).size.height,
@@ -446,7 +472,12 @@ class _PrizeScreenState extends State<PrizeScreen> {
               ],
             ),
           ),
-          Expanded(child: Text('Ad')),
+          Expanded(
+            child: Image.network(
+              imageSponsor,
+              fit: BoxFit.fill,
+            ),
+          ),
         ],
       ),
     );
