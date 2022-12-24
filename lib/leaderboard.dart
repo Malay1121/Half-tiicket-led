@@ -705,9 +705,9 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                                           await SharedPreferences
                                                               .getInstance();
                                                       if (int.parse(_age.text) >
-                                                              3 &&
+                                                              2 &&
                                                           int.parse(_age.text) <
-                                                              103) {
+                                                              104) {
                                                         if (_phoneController
                                                                 .text.length ==
                                                             10) {

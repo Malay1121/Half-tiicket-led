@@ -180,6 +180,9 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
       //   Navigator.push(
       //       context, MaterialPageRoute(builder: (context) => MainScreen()));
       // });
+      Future.delayed(Duration(minutes: 5), () {
+        Navigator.pushNamed(context, '/leaderboard/639cda5575f95e42b54ff971');
+      });
     });
   }
 
