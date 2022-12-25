@@ -180,6 +180,9 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
       //   Navigator.push(
       //       context, MaterialPageRoute(builder: (context) => MainScreen()));
       // });
+      Future.delayed(Duration(minutes: 5), () {
+        Navigator.pushNamed(context, '/leaderboard/639cda5575f95e42b54ff971');
+      });
     });
   }
 
@@ -299,241 +302,238 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
   bool finishSwap = false;
   Widget result = SizedBox();
   @override
+  void initState() {
+    // TODO: implement initState
+    setState(() {
+      imageLoaded = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     size = Size(widget.size.width - widget.innerPadding * 2,
         widget.size.width - widget.innerPadding);
 
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        // let make ui
-        children: [
-          SizedBox(
-            height: responsiveHeight(57, context),
-            width: responsiveWidth(325, context),
-            child: AutoSizeText(
-              (300 - _stopwatch.elapsed.inSeconds).toString(),
-              style: GoogleFonts.outfit(
-                textStyle: TextStyle(
-                  fontSize: responsiveText(40, context),
-                  fontWeight: FontWeight.bold,
-                ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      // let make ui
+      children: [
+        SizedBox(
+          height: responsiveHeight(57, context),
+          width: responsiveWidth(325, context),
+          child: AutoSizeText(
+            (300 - _stopwatch.elapsed.inSeconds).toString(),
+            style: GoogleFonts.outfit(
+              textStyle: TextStyle(
+                fontSize: responsiveText(40, context),
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          result,
-          // make 2 column, 1 for puzzle box, 2nd for button testing
-          Container(
-            width: widget.size.width,
-            height: widget.size.width,
-            padding: EdgeInsets.all(widget.innerPadding),
-            child: Stack(
-              children: [
-                // we use stack stack our background & puzzle box
-                // 1st show image use
+        ),
+        result,
+        // make 2 column, 1 for puzzle box, 2nd for button testing
+        Container(
+          width: widget.size.width,
+          height: widget.size.width,
+          padding: EdgeInsets.all(widget.innerPadding),
+          child: Stack(
+            children: [
+              // we use stack stack our background & puzzle box
+              // 1st show image use
 
-                if (slideObjects == null) ...[
-                  RepaintBoundary(
-                    key: _globalKey,
-                    child: Container(
-                      color: Colors.transparent,
-                      height: double.maxFinite,
-                      child: widget.imageBckGround,
-                    ),
-                  )
-                ],
-                // 2nd show puzzle with empty
-                if (slideObjects != null)
-                  ...slideObjects!
-                      .where((slideObject) => slideObject.empty)
-                      .map(
-                    (slideObject) {
-                      return Positioned(
-                        left: slideObject.posCurrent.dx,
-                        top: slideObject.posCurrent.dy,
+              if (slideObjects == null) ...[
+                RepaintBoundary(
+                  key: _globalKey,
+                  child: Container(
+                    color: Colors.transparent,
+                    height: double.maxFinite,
+                    child: widget.imageBckGround,
+                  ),
+                )
+              ],
+              // 2nd show puzzle with empty
+              if (slideObjects != null)
+                ...slideObjects!.where((slideObject) => slideObject.empty).map(
+                  (slideObject) {
+                    return Positioned(
+                      left: slideObject.posCurrent.dx,
+                      top: slideObject.posCurrent.dy,
+                      child: SizedBox(
+                        width: slideObject.size.width,
+                        height: slideObject.size.height,
+                        child: Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.all(2),
+                          color: Colors.white24,
+                          child: Stack(
+                            children: [
+                              if (slideObject.image != null) ...[
+                                Opacity(
+                                  opacity: success ? 1 : 0.3,
+                                  child: slideObject.image,
+                                )
+                              ]
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ).toList(),
+              // this for box with not empty flag
+              if (slideObjects != null)
+                ...slideObjects!.where((slideObject) => !slideObject.empty).map(
+                  (slideObject) {
+                    // change to animated position
+                    // disabled checking success on swap process
+                    return AnimatedPositioned(
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.ease,
+                      left: slideObject.posCurrent.dx,
+                      top: slideObject.posCurrent.dy,
+                      child: GestureDetector(
+                        onTap: () =>
+                            changePos(slideObject.indexCurrent, widget.id),
                         child: SizedBox(
                           width: slideObject.size.width,
                           height: slideObject.size.height,
                           child: Container(
                             alignment: Alignment.center,
                             margin: EdgeInsets.all(2),
-                            color: Colors.white24,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2,
+                              ),
+                            ),
                             child: Stack(
                               children: [
                                 if (slideObject.image != null) ...[
-                                  Opacity(
-                                    opacity: success ? 1 : 0.3,
-                                    child: slideObject.image,
-                                  )
-                                ]
+                                  slideObject.image
+                                ],
+                                Center(
+                                  child: TextWidget(
+                                    "${slideObject.indexDefault}",
+                                    color: Color(0xff225f87),
+                                    strokeColor: Colors.white,
+                                    strokeWidth: 8,
+                                    fontFamily: "KidZone",
+                                    fontSize: 40,
+                                    overrideSizeStroke: false,
+                                  ),
+                                ),
+
+                                // nice one.. lets make it random
                               ],
                             ),
+                            // nice one
                           ),
                         ),
-                      );
-                    },
-                  ).toList(),
-                // this for box with not empty flag
-                if (slideObjects != null)
-                  ...slideObjects!
-                      .where((slideObject) => !slideObject.empty)
-                      .map(
-                    (slideObject) {
-                      // change to animated position
-                      // disabled checking success on swap process
-                      return AnimatedPositioned(
-                        duration: Duration(milliseconds: 200),
-                        curve: Curves.ease,
-                        left: slideObject.posCurrent.dx,
-                        top: slideObject.posCurrent.dy,
-                        child: GestureDetector(
-                          onTap: () =>
-                              changePos(slideObject.indexCurrent, widget.id),
-                          child: SizedBox(
-                            width: slideObject.size.width,
-                            height: slideObject.size.height,
-                            child: Container(
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: 2,
-                                ),
-                              ),
-                              child: Stack(
-                                children: [
-                                  if (slideObject.image != null) ...[
-                                    slideObject.image
-                                  ],
-                                  Center(
-                                    child: TextWidget(
-                                      "${slideObject.indexDefault}",
-                                      color: Color(0xff225f87),
-                                      strokeColor: Colors.white,
-                                      strokeWidth: 8,
-                                      fontFamily: "KidZone",
-                                      fontSize: 40,
-                                      overrideSizeStroke: false,
+                      ),
+                    );
+                  },
+                ).toList()
+
+              // now not show at all because we dont generate slideObjects yet.. lets generate
+            ],
+          ),
+        ),
+        Spacer(),
+        Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // u can use any button
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    if (imageLoaded == false) {
+                      _stopwatch.reset();
+                      generatePuzzle(widget.id);
+                      _stopwatch.start();
+                      setState(() {
+                        result = Column(
+                          children: [
+                            SizedBox(
+                              height: responsiveHeight(57, context),
+                              width: responsiveWidth(325, context),
+                              child: Center(
+                                child: AutoSizeText(
+                                  'Arrange in order:-',
+                                  style: GoogleFonts.outfit(
+                                    textStyle: TextStyle(
+                                      fontSize: responsiveText(40, context),
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-
-                                  // nice one.. lets make it random
-                                ],
+                                ),
                               ),
-                              // nice one
+                            ),
+                            Container(
+                              width: responsiveWidth(200, context),
+                              height: responsiveHeight(200, context),
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                image: AssetImage('assets/solved.png'),
+                              )),
+                            ),
+                          ],
+                        );
+                      });
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (contest) {
+                            return Text('You have already started!');
+                          });
+                    }
+                  },
+                  child: Container(
+                    height: responsiveHeight(58, context),
+                    width: responsiveWidth(326, context),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(37),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFFFFB2B2),
+                          Color(0xFFFBC63C),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: Center(
+                      child: SizedBox(
+                        height: responsiveHeight(25, context),
+                        width: responsiveWidth(106, context),
+                        child: Center(
+                          child: AutoSizeText(
+                            'Start',
+                            style: GoogleFonts.outfit(
+                              textStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: responsiveText(20, context),
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ).toList()
-
-                // now not show at all because we dont generate slideObjects yet.. lets generate
-              ],
-            ),
-          ),
-          // imageLoaded == true ? SizedBox() : Spacer(),
-          Container(
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // u can use any button
-                  imageLoaded == true
-                      ? SizedBox()
-                      : Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              generatePuzzle(widget.id);
-                              _stopwatch.start();
-                              Future.delayed(Duration(minutes: 5), () {
-                                _stopwatch.stop();
-                                Navigator.pushNamed(context,
-                                    '/leaderboard/639cda5575f95e42b54ff971');
-                              });
-                              setState(() {
-                                result = Column(
-                                  children: [
-                                    SizedBox(
-                                      height: responsiveHeight(57, context),
-                                      width: responsiveWidth(325, context),
-                                      child: Center(
-                                        child: AutoSizeText(
-                                          'Arrange in order:-',
-                                          style: GoogleFonts.outfit(
-                                            textStyle: TextStyle(
-                                              fontSize:
-                                                  responsiveText(40, context),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: responsiveWidth(200, context),
-                                      height: responsiveHeight(200, context),
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                        image: AssetImage('assets/solved.png'),
-                                      )),
-                                    ),
-                                  ],
-                                );
-                              });
-                            },
-                            child: imageLoaded == true
-                                ? SizedBox()
-                                : Container(
-                                    height: responsiveHeight(58, context),
-                                    width: responsiveWidth(326, context),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.white,
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(37),
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Color(0xFFFFB2B2),
-                                          Color(0xFFFBC63C),
-                                        ],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: SizedBox(
-                                        height: responsiveHeight(25, context),
-                                        width: responsiveWidth(106, context),
-                                        child: Center(
-                                          child: AutoSizeText(
-                                            'Start',
-                                            style: GoogleFonts.outfit(
-                                              textStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontSize:
-                                                    responsiveText(20, context),
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                          ),
-                        ),
-                ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
