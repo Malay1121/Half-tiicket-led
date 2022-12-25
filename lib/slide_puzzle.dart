@@ -467,12 +467,7 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
                             height: responsiveHeight(200, context),
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                              image: NetworkImage(_data['contests']
-                                  .toList()
-                                  .where((i) =>
-                                      i['_id'] == '639cda5575f95e42b54ff971')
-                                  .toList()[0]['img']
-                                  .toString()),
+                              image: AssetImage('assets/solved.png'),
                             )),
                           ),
                         ],
