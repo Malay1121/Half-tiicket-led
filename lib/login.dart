@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
             preferences.getString('password') != 'null' &&
             preferences.getString('email') != 'null') {
           await http
-              .post(Uri.parse('https://api.halftiicket.com/login'),
+              .post(Uri.parse('https://6hp1qs.deta.dev/login'),
                   headers: <String, String>{
                     'Content-Type': 'application/json; charset=UTF-8',
                   },
@@ -306,7 +306,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               await SharedPreferences.getInstance();
                           final response = await http
                               .post(
-                            Uri.parse('https://api.halftiicket.com/login'),
+                            Uri.parse('https://6hp1qs.deta.dev/login'),
                             headers: {
                               'Content-Type': 'application/json',
                             },

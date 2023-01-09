@@ -73,7 +73,7 @@ class OffersPageState extends State<OffersPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await http.get(
         Uri.parse(
-          'https://api.halftiicket.com/getOffers',
+          'https://6hp1qs.deta.dev/getOffers',
         ),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

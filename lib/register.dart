@@ -451,7 +451,7 @@ class _RegisterationScreenState extends State<RegisterationScreen> {
                               await SharedPreferences.getInstance();
                           await http
                               .post(
-                            Uri.parse('https://api.halftiicket.com/addUser'),
+                            Uri.parse('https://6hp1qs.deta.dev/addUser'),
                             headers: {
                               'Content-Type': 'application/json',
                             },

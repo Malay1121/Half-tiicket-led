@@ -25,7 +25,7 @@ class _VotingScreenState extends State<VotingScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await http.get(
         Uri.parse(
-          'https://api.halftiicket.com/getVotes',
+          'https://6hp1qs.deta.dev/getVotes',
         ),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -38,7 +38,7 @@ class _VotingScreenState extends State<VotingScreen> {
       });
 
       var channel = WebSocketChannel.connect(
-        Uri.parse('wss://api.halftiicket.com/ws/votes'),
+        Uri.parse('wss://6hp1qs.deta.dev/ws/votes'),
       );
       channel.stream.listen((event) {
         String data = event.toString();

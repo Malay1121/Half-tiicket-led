@@ -75,7 +75,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var response = await http.get(
         Uri.parse(
-          'https://api.halftiicket.com/contestLeaderboard/${widget.id}',
+          'https://6hp1qs.deta.dev/contestLeaderboard/${widget.id}',
         ),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -87,24 +87,24 @@ class _LeaderBoardState extends State<LeaderBoard> {
           imageSponsor = _data['contest']['img'];
         });
       });
-      channel = WebSocketChannel.connect(
-        Uri.parse('wss://api.halftiicket.com/ws/${widget.id}'),
-      );
-      channel.stream.listen((event) {
-        String data = event.toString();
+      //   channel = WebSocketChannel.connect(
+      //     Uri.parse('wss://6hp1qs.deta.dev/ws/${widget.id}'),
+      //   );
+      //   channel.stream.listen((event) {
+      //     String data = event.toString();
 
-        setState(() {
-          _data = jsonDecode(data) == null
-              ? {
-                  'name': 'Atharva',
-                  'price': 10,
-                  'image': 'http://172.105.41.217:8000/get-image/atharva_dalal',
-                  'bid_by': null,
-                }
-              : jsonDecode(data);
-        });
-      });
-      // channel.sink.add('data');
+      //     setState(() {
+      //       _data = jsonDecode(data) == null
+      //           ? {
+      //               'name': 'Atharva',
+      //               'price': 10,
+      //               'image': 'http://172.105.41.217:8000/get-image/atharva_dalal',
+      //               'bid_by': null,
+      //             }
+      //           : jsonDecode(data);
+      //     });
+      //   });
+      //   // channel.sink.add('data');
     });
   }
 
@@ -714,7 +714,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                                           await http
                                                               .post(
                                                             Uri.parse(
-                                                                'https://api.halftiicket.com/addTempUser'),
+                                                                'https://6hp1qs.deta.dev/addTempUser'),
                                                             headers: {
                                                               'Content-Type':
                                                                   'application/json',

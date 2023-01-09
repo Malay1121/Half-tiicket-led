@@ -48,7 +48,7 @@
 //                     await http
 //                         .post(
 //                           Uri.parse(
-//                               'https://api.halftiicket.com/addPlayerSpinner'),
+//                               'https://6hp1qs.deta.dev/addPlayerSpinner'),
 //                           headers: {
 //                             'Content-Type': 'application/json',
 //                           },
@@ -206,7 +206,7 @@
 //                         await SharedPreferences.getInstance();
 //                     await http.post(
 //                       Uri.parse(
-//                           'https://api.halftiicket.com/spinnerEmailChecker/${_emailController.text.replaceAll("@", "%40")}'),
+//                           'https://6hp1qs.deta.dev/spinnerEmailChecker/${_emailController.text.replaceAll("@", "%40")}'),
 //                       headers: {
 //                         'Content-Type': 'application/json',
 //                       },
@@ -227,7 +227,7 @@
 
 //                         await http.post(
 //                           Uri.parse(
-//                               'https://api.halftiicket.com/spinnerOffers'),
+//                               'https://6hp1qs.deta.dev/spinnerOffers'),
 //                           headers: {
 //                             'Content-Type': 'application/json',
 //                           },

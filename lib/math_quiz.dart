@@ -30,6 +30,7 @@ class _MathQuizState extends State<MathQuiz> {
   @override
   void initState() {
     // TODO: implement initState
+    _stopwatch.reset();
     _generateQuiz();
     _stopwatch.start();
     setState(() {
@@ -148,7 +149,7 @@ class _MathQuizState extends State<MathQuiz> {
                                           await http
                                               .post(
                                                 Uri.parse(
-                                                    'https://api.halftiicket.com/addPlayerContest'),
+                                                    'https://6hp1qs.deta.dev/addPlayerContest'),
                                                 headers: {
                                                   'Content-Type':
                                                       'application/json',
@@ -206,7 +207,9 @@ class _MathQuizState extends State<MathQuiz> {
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                           colors: [
-                                            Color(0xFFFFD07B),
+                                            answer == num1 + num2
+                                                ? Color(0xFFF7A001)
+                                                : Color(0xFFFFD07B),
                                             Color(0xFFF7A001)
                                           ],
                                         ),

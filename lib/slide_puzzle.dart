@@ -162,7 +162,7 @@ class _SlidePuzzleState extends State<SlidePuzzle> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var response = await http.get(
         Uri.parse(
-          'https://api.halftiicket.com/getContests',
+          'https://6hp1qs.deta.dev/getContests',
         ),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -731,7 +731,7 @@ class _SlidePuzzleWidgetState extends State<SlidePuzzleWidget> {
       _stopwatch.stop();
       final response = await http
           .post(
-            Uri.parse('https://api.halftiicket.com/addPlayerContest'),
+            Uri.parse('https://6hp1qs.deta.dev/addPlayerContest'),
             headers: {
               'Content-Type': 'application/json',
             },

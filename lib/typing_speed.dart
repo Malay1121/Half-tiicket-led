@@ -51,6 +51,7 @@ List correct = [
 class _TypingSpeedState extends State<TypingSpeed> {
   @override
   void initState() {
+    _stopwatch.reset();
     setState(() {
       counter = 0;
       word = [];
@@ -82,7 +83,7 @@ class _TypingSpeedState extends State<TypingSpeed> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await http.get(
         Uri.parse(
-          'https://api.halftiicket.com/words',
+          'https://6hp1qs.deta.dev/words',
         ),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -192,7 +193,7 @@ class _TypingSpeedState extends State<TypingSpeed> {
                       //         });
                       //         final response = await http.post(
                       //           Uri.parse(
-                      //               'https://api.halftiicket.com/addPlayerContest/${widget.id}'),
+                      //               'https://6hp1qs.deta.dev/addPlayerContest/${widget.id}'),
                       //           headers: {
                       //             'Content-Type': 'application/json',
                       //             'x-api-key':
@@ -216,7 +217,7 @@ class _TypingSpeedState extends State<TypingSpeed> {
                       //         print(_preferences.getString('_id'));
                       //         final response = await http.post(
                       //           Uri.parse(
-                      //               'api.halftiicket.com/addPlayerContest/${widget.id}'),
+                      //               '6hp1qs.deta.dev/addPlayerContest/${widget.id}'),
                       //           headers: {
                       //             'Content-Type': 'application/json',
                       //             'x-api-key':
@@ -313,7 +314,7 @@ class _TypingSpeedState extends State<TypingSpeed> {
                                   print(_preferences.getString('_id'));
                                   final response = await http.post(
                                     Uri.parse(
-                                        'api.halftiicket.com/addPlayerContest/${widget.id}'),
+                                        '6hp1qs.deta.dev/addPlayerContest/${widget.id}'),
                                     headers: {
                                       'Content-Type': 'application/json',
                                     },
@@ -345,7 +346,7 @@ class _TypingSpeedState extends State<TypingSpeed> {
                                   await http
                                       .post(
                                         Uri.parse(
-                                            'https://api.halftiicket.com/addPlayerContest'),
+                                            'https://6hp1qs.deta.dev/addPlayerContest'),
                                         headers: {
                                           'Content-Type': 'application/json',
                                         },

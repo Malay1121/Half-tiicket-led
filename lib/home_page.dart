@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await http.get(
         Uri.parse(
-          'https://api.halftiicket.com/getContests',
+          'https://6hp1qs.deta.dev/getContests',
         ),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
